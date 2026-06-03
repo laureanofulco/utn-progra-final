@@ -1,0 +1,12 @@
+# Ejecutables
+*.exe
+*.outw
+
+# Carpetas de compilación
+bin/*
+!bin/.gitkeep
+obj/
+
+# Archivos de configuración de usuario/sesión
+*.layout
+*.depend
