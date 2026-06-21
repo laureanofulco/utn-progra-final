@@ -30,7 +30,6 @@ void menu_usuario(){
 		switch(opc){
 			case 0:{
 				limpiar_pantalla();
-				menu();
 				break;
 			}
 			case 1:{

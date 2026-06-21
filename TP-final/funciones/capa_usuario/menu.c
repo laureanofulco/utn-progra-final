@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include "menu.h"
 #include "login.h"
+#include "menu_admin.h"
+#include "menu_usuario.h"
+#include "../libs/scanner.h"
+#include "../libs/utils.h"
 
 void menu(){
-	int opc = 0;
-	char archivo_admins[] = {"admins.dat"};
-
+	int opc;
 	
 	do{
 		limpiar_pantalla();
@@ -17,7 +19,7 @@ void menu(){
 		printf(" 2 - Modo usuario\n");
 		printf(" 0 - Salir\n");
 		printf("\nopcion: ");
-		scanf("%d", &opc);
+		opc = scanInt();
 		
 		switch(opc){
 			case 1:{
@@ -37,7 +39,11 @@ void menu(){
 				printf("Saliendo del sistema . . .\n");
 				break;
 			}
-				
+			default:{
+				mensaje("ERROR", "Ingrese opcion valida");
+				getchar();	
+				break;
+			}
 		}
 	}while(opc != 0);
 }

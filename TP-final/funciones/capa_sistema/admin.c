@@ -9,20 +9,17 @@
 #define ARCHIVO_ADMINS "admins.dat"
 
 
-void mensaje(const char *titulo, const char *mensaje){
-	printf("\n============================\n");
-	printf("  %s\n", titulo);
-	printf("\n============================\n");
-	printf("  %s\n", mensaje);
-	printf("\n============================\n");
-}
-
-void convertir_minuscula(char * cadena){
-	for(int i=0; cadena[i] != '\0'; i++){
-		cadena[i] = tolower((unsigned char)cadena[i]);
-	}
-}
-
+/**
+ * @brief Busca un administrador por nombre.
+ *
+ * Recorre el archivo de administradores buscando una coincidencia
+ * con el nombre indicado. Si se encuentra y el parámetro admin
+ * no es NULL, copia los datos encontrados en dicha estructura.
+ *
+ * @param nombre Nombre del administrador a buscar.
+ * @param admin Puntero donde se almacenará el administrador encontrado.
+ * @return 1 si el administrador existe, 0 en caso contrario.
+ */
 int buscar_admin(const char nombre[], Administrador *admin){
 	FILE * archivo = fopen(ARCHIVO_ADMINS, "rb");
 	Administrador admin_aux;
@@ -45,6 +42,14 @@ int buscar_admin(const char nombre[], Administrador *admin){
 	return encontrado;
 }
 
+
+/**
+ * @brief Genera el archivo inicial de administradores.
+ *
+ * Verifica si el archivo de administradores existe. En caso
+ * contrario, solicita los datos del primer administrador y
+ * crea el archivo correspondiente.
+ */
 void generar_archivo_admins(){
 	FILE * archivo = fopen(ARCHIVO_ADMINS, "rb");
 	
@@ -76,6 +81,16 @@ void generar_archivo_admins(){
 	}
 }
 
+/**
+ * @brief Registra un nuevo administrador.
+ *
+ * Solicita nombre y contraseña, verifica que el administrador
+ * no exista previamente y almacena los datos en el archivo.
+ * La contraseña es cifrada antes de ser guardada.
+ *
+ * @see buscar_admin()
+ * @see cifrar()
+ */
 void alta_admin(){
 	Administrador admin;
 	
@@ -107,6 +122,13 @@ void alta_admin(){
 	}
 }
 
+
+/**
+ * @brief Muestra todos los administradores registrados.
+ *
+ * Recorre el archivo de administradores e imprime los nombres
+ * de cada registro almacenado.
+ */
 void ver_admins(){
 	FILE * archivo = fopen(ARCHIVO_ADMINS, "rb");
 	Administrador aux;
@@ -123,6 +145,19 @@ void ver_admins(){
 	getchar();
 }
 
+
+/**
+ * @brief Modifica los datos de un administrador.
+ *
+ * Busca un administrador por nombre y permite modificar
+ * su nombre, contraseña o ambos. Los cambios se guardan
+ * directamente en el archivo.
+ *
+ * @return 1 si la operación finaliza correctamente,
+ *         0 si ocurre un error al abrir el archivo.
+ *
+ * @see cifrar()
+ */
 int modificar_admin(){
 	Administrador admin_aux;
 	char nombre[50];

@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=1
 CompilerSettings=0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0;1;0;0;0;0;0;0;0
-UnitCount=38
+UnitCount=40
 
 [VersionInfo]
 Major=1
@@ -422,6 +422,26 @@ BuildCmd=
 
 [Unit38]
 FileName=funciones\capa_sistema\admin.h
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit39]
+FileName=funciones\libs\utils.h
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit40]
+FileName=funciones\libs\utils.c
 CompileCpp=0
 Folder=
 Compile=1

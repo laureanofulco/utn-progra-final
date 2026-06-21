@@ -38,8 +38,11 @@ int confirmar(char condicion)
 int scanInt(void)
 {
     int aux = 0;
-    scanf("%d", &aux);
-    limpiarBuferDeEntrada();
+    while(scanf("%d", &aux) != 1){
+    	printf("Error. Ingrese un numero: ");
+    	limpiarBuferDeEntrada();
+	}
+	limpiarBuferDeEntrada();
     return aux;
 }
 
@@ -67,18 +70,27 @@ float scanFloat(void)
  */
 int scanString(char* string, int maxLength)
 {
-    if (fgets(string, maxLength, stdin) == NULL)
-    {
-        return -1;
-    }
-    int ult = strlen(string) - 1;
-    if (string[ult] == '\n')
-    {
-        string[ult] = '\0';
-    }
-    else
-    {
-        limpiarBuferDeEntrada();
-    }
-    return strlen(string);
+    do{
+    	if(fgets(string, maxLength, stdin) == NULL){
+    		return -1;
+		}
+		int ult = strlen(string) -1;
+		
+		if(ult >= 0 && string[ult] == '\n'){
+			string[ult] = '\0';
+		}else{
+			limpiarBuferDeEntrada();
+		}
+		
+		char *p = string;
+		while(*p && isspace((unsigned char)*p)){
+			p++;
+		}
+		
+		if(*p != '\0'){
+			return strlen(string);
+		}
+		
+		printf("Caracter vacio, intente nuevamente: ");
+	}while(1);
 }

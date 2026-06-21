@@ -4,14 +4,12 @@
 #include "menu_admin.h"
 #include "../capa_sistema/admin.h"
 #include "../libs/scanner.h"
+#include "../capa_sistema/artista.h"
+#include "../capa_sistema/escenario.h"
+#include "../capa_sistema/presentacion.h"
+#include "../../funciones/libs/utils.h"
 
-void limpiar_pantalla(){
-#ifdef _WIN32
-    system("cls");
-#else
-    printf("\033[2J\033[H");
-#endif
-}
+////// SOLUCIONAR PROBLEMAS EN EL MENU
 
 void pausa(){
 	printf("\n\nPresione ENTER para continuar");
@@ -20,7 +18,6 @@ void pausa(){
 
 void menu_admin(){
 	int opc = 0;
-	
 	do{
 		limpiar_pantalla();
 		printf("===================\n");
@@ -32,7 +29,7 @@ void menu_admin(){
 		printf(" 4 - Administracion\n");
 		printf(" 0 - Cerrar sesion\n");
 		printf(" opcion: ");
-		scanf("%d", &opc);
+		opc = scanInt();
 		
 		switch(opc){
 			case 0:{
@@ -55,6 +52,11 @@ void menu_admin(){
 				administracion();
 				break;
 			}
+			
+			default:
+				mensaje("Error", "Ingrese una opcion valida");
+				getchar();
+				break;
 	   }
 	}while(opc != 0);
 }
@@ -75,7 +77,26 @@ void menu_artistas(){
         
         switch(menu_opcion){
         	case 1:{
-        		printf("Opcion 1");
+        		limpiar_pantalla();
+        		alta_artista();
+				break;
+			}
+			case 2:{
+				limpiar_pantalla();
+				baja_artista();
+				getchar();
+				break;
+			}
+			case 3:{
+				limpiar_pantalla();
+				modificar_artista();
+				getchar();
+				break;
+			}
+			case 4:{
+				limpiar_pantalla();
+				listar_artista();
+				getchar();
 				break;
 			}
 		}
@@ -99,7 +120,27 @@ void menu_escenarios(){
         
         switch(menu_opcion){
         	case 1:{
-        		printf("Opcion 1");
+        		limpiar_pantalla();
+        		alta_escenario();
+        		getchar();
+				break;
+			}
+			case 2:{
+				limpiar_pantalla();
+				baja_escenario();
+				getchar();
+				break;
+			}
+			case 3:{
+				limpiar_pantalla();
+				modificar_escenario();
+				getchar();
+				break;
+			}
+			case 4:{
+				limpiar_pantalla();
+				listar_escenarios();
+				getchar();
 				break;
 			}
 		}
@@ -125,7 +166,39 @@ void menu_presentaciones(){
         
         switch(menu_opcion){
         	case 1:{
-        		printf("Opcion 1");
+        		limpiar_pantalla();
+        		alta_presentacion();
+        		getchar();
+				break;
+			}
+			case 2:{
+				limpiar_pantalla();
+				
+				getchar();
+				break;
+			}
+			case 3:{
+				limpiar_pantalla();
+				
+				getchar();
+				break;
+			}
+			case 4:{
+				limpiar_pantalla();
+				listar_presentaciones();
+				getchar();
+				break;
+			}
+			case 5:{
+				limpiar_pantalla();
+				
+				getchar();
+				break;
+			}
+			case 6:{
+				limpiar_pantalla();
+				
+				getchar();
 				break;
 			}
 		}
@@ -177,7 +250,6 @@ void administracion(){
 			}
 			
 			case 0:{
-				
 				break;
 			}
 		}
