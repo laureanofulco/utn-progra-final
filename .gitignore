@@ -1,6 +1,7 @@
 # Ejecutables
 *.exe
 *.outw
+*.o
 
 # Carpetas de compilación
 bin/*
@@ -10,3 +11,4 @@ obj/
 # Archivos de configuración de usuario/sesión
 *.layout
 *.depend
+*.dev

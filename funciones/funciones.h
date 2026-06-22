@@ -1,30 +1,18 @@
-/**
- * @file funciones.h
- * @brief Punto de acceso principal a los módulos del proyecto.
- *
- * Incluye las dependencias necesarias para el funcionamiento
- * del sistema de gestión de festivales:
- *
- * - Bibliotecas estándar de C.
- * - Librerías auxiliares desarrolladas para el proyecto.
- * - Módulos de la capa de usuario.
- * - Módulos de la capa de sistema.
- *
- * Su objetivo es simplificar la inclusión de dependencias
- * dentro de los distintos archivos fuente del proyecto.
- */
-
+// Guardas
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
 
+// Librerías Estándar
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
+// Librerías de la cátedra
 #include "libs/pila.h"
 #include "libs/scanner.h"
 
+// Funciones: Capa de Usuario
 #include "capa_usuario/menu.h"
 #include "capa_usuario/menu_admin.h"
 #include "capa_usuario/menu_usuario.h"
@@ -32,14 +20,17 @@
 #include "capa_usuario/reportes.h"
 #include "capa_usuario/exportacion.h"
 
+// Funciones: Login
 #include "capa_sistema/admin.h"
 #include "capa_sistema/autenticacion.h"
 #include "capa_sistema/cifrado.h"
 
+// Funciones: Capa de Sistema
 #include "capa_sistema/artista.h"
 #include "capa_sistema/escenario.h"
 #include "capa_sistema/presentacion.h"
 #include "capa_sistema/horario.h"
 #include "capa_sistema/validaciones.h"
 
+// Guardas
 #endif
