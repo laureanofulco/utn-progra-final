@@ -1,7 +1,4 @@
 #include "funciones/funciones.h"
-#include "funciones/libs/utils.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 
 int main(){

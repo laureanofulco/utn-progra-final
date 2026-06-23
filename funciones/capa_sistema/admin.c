@@ -10,6 +10,47 @@
 
 
 /**
+ * @brief Genera el archivo inicial de administradores.
+ *
+ * Verifica si el archivo de administradores existe. En caso
+ * contrario, solicita los datos del primer administrador y
+ * crea el archivo correspondiente.
+ */
+void generar_archivo_admins(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ADMINS, "rb");
+	
+	if(archivo != NULL)
+	{
+		fclose(archivo);
+		return;
+	}
+	
+	archivo = fopen(ARCHIVO_ADMINS, "wb");
+	if(archivo){
+		Administrador admin;
+		limpiar_pantalla();
+		printf("\n==== Creacion primer admin ====\n");
+		printf(" Nombre: ");
+		scanString(admin.nombre, sizeof(admin.nombre));
+		printf(" Password: ");
+		scanString(admin.password, sizeof(admin.password));
+		
+		convertir_minuscula(admin.nombre);
+		convertir_minuscula(admin.password);
+		
+		cifrar(admin.password);
+		fwrite(&admin, sizeof(Administrador), 1, archivo);
+		fclose(archivo);
+		mensaje("OK", "Administrador creado correctamente");
+		getchar();
+	}else{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+}
+
+
+/**
  * @brief Busca un administrador por nombre.
  *
  * Recorre el archivo de administradores buscando una coincidencia
@@ -40,45 +81,6 @@ int buscar_admin(const char nombre[], Administrador *admin){
 		mensaje("ERROR", "No se pudo abrir el archivo");
 	}
 	return encontrado;
-}
-
-
-/**
- * @brief Genera el archivo inicial de administradores.
- *
- * Verifica si el archivo de administradores existe. En caso
- * contrario, solicita los datos del primer administrador y
- * crea el archivo correspondiente.
- */
-void generar_archivo_admins(){
-	FILE * archivo = fopen(ARCHIVO_ADMINS, "rb");
-	
-	if(archivo != NULL){
-		fclose(archivo);
-		return;
-	}
-	
-	archivo = fopen(ARCHIVO_ADMINS, "wb");
-	if(archivo){
-		Administrador admin;
-		limpiar_pantalla();
-		printf("\n==== Creacion primer admin ====\n");
-		printf(" Nombre: ");
-		scanString(admin.nombre, sizeof(admin.nombre));
-		printf(" Password: ");
-		scanString(admin.password, sizeof(admin.password));
-		
-		convertir_minuscula(admin.nombre);
-		convertir_minuscula(admin.password);
-		
-		cifrar(admin.password);
-		fwrite(&admin, sizeof(Administrador), 1, archivo);
-		fclose(archivo);
-		mensaje("OK", "Administrador creado correctamente");
-		getchar();
-	}else{
-		mensaje("ERROR", "No se pudo abrir el archivo");
-	}
 }
 
 /**

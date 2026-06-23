@@ -1,13 +1,6 @@
-// Guardas
+
 #ifndef ADMIN_H
 #define ADMIN_H
-
-// Estructuras
-typedef struct st_Administrador{
-	
-	char nombre[50];
-	char password[50];
-}Administrador;
 
 // Funciones
 int buscar_admin(const char nombre[], Administrador *admin);

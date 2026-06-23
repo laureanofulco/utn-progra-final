@@ -1,6 +1,6 @@
-// Guardas
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
+
 
 // Librerías Estándar
 #include <stdio.h>
@@ -32,5 +32,9 @@
 #include "capa_sistema/horario.h"
 #include "capa_sistema/validaciones.h"
 
-// Guardas
+#include "logica.h"
+
+// Funciones: Dominio
+#include "funciones/dominio.h"
+
 #endif
