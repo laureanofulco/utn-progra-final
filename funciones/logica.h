@@ -2,6 +2,7 @@
 #define LOGICA_H
 
 void generar_archivo_admins(void);
+void alta_admin(void);
 
 
 #endif

@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "dominio.h"
-#include "logica.h"
+#include "funciones/dominio.h"
+#include "funciones/herramientas.h"
+#include "funciones/logica.h"
 
 #define ARCHIVO_ADMINS "archivos/admins.dat"
 
@@ -34,10 +35,10 @@ void generar_archivo_admins(void)
     printf("\n==== Creacion primer admin ====\n");
 
     printf("- Nombre: ");
-    scanString(admin.nombre, sizeof(admin.nombre));
+    scanString(admin.nombre, 50);
 
     printf("\n- Password: ");
-    scanString(admin.password, sizeof(admin.password));
+    scanString(admin.password, 50);
 
     fwrite(&admin, sizeof(Administrador), 1, archivo);
 
@@ -58,7 +59,8 @@ void generar_archivo_admins(void)
  * @see buscar_admin()
  * @see cifrar()
  */
-void alta_admin(){
+void alta_admin(void)
+{
 	Administrador admin;
 	
 	printf("Ingrese nombre: ");
