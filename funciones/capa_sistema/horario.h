@@ -1,14 +1,8 @@
-/**
- * @file horario.h
- * @brief Definiciones y operaciones para fechas, horarios y duraciones.
- *
- * Contiene los tipos de datos seguros utilizados para representar
- * fechas, horarios y duraciones, además de las funciones necesarias
- * para su creación, validación y comparación.
- */
+// Guardas
 #ifndef HORARIO_H
 #define HORARIO_H
 
+// Estructuras
 typedef struct st_Fecha{
 	int dia;
 	int mes;
@@ -27,6 +21,7 @@ typedef struct stDuracion{
 	int esValido;
 } Duracion;
 
+// Funciones
 Horario crear_horario(int horas, int minutos);
 Duracion crear_duracion(int horas, int minutos);
 
@@ -42,4 +37,5 @@ int rango(Fecha incio, Fecha final);
 
 int verificar_horario(Horario h1, Horario h2);
 
+// Guardas
 #endif

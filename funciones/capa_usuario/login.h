@@ -1,9 +1,9 @@
+// Guardas
 #ifndef LOGIN_h
 #define LOGIN_h
 
-/**
- * @brief Permite autenticar a un administrador.
- */
+// Funciones
 int login_admin();
 
+// Guardas
 #endif

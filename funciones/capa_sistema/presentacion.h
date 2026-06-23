@@ -1,9 +1,11 @@
+// Guardas
 #ifndef PRESENTACION_H
 #define PRESENTACION_H
 #include "horario.h"
 #include "artista.h"
 #include "escenario.h"
 
+// Estructuras
 typedef struct stPresentacion
 {
 	int id_presentacion;
@@ -15,13 +17,10 @@ typedef struct stPresentacion
 		
 } Presentacion;
 
-/**
- *@file presentaciones.dat
- *@brief manejo de alta, baja, modificaion, listar presentacions
- *@brief obtener_id_presentacion func. aux para obtener id's de presentacion
-*/
+// Funciones
 void alta_presentacion();
 void listar_presentaciones();
 int obtener_id_presentacion();
 
+// Guardas
 #endif
