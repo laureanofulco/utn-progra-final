@@ -23,7 +23,6 @@
 // Funciones: Login
 #include "capa_sistema/admin.h"
 #include "capa_sistema/autenticacion.h"
-#include "capa_sistema/cifrado.h"
 
 // Funciones: Capa de Sistema
 #include "capa_sistema/artista.h"
@@ -32,9 +31,8 @@
 #include "capa_sistema/horario.h"
 #include "capa_sistema/validaciones.h"
 
-#include "logica.h"
-
-// Funciones: Dominio
+#include "funciones/herramientas.h"
+#include "funciones/logica.h"
 #include "funciones/dominio.h"
 
 #endif
