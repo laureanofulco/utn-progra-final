@@ -2,8 +2,8 @@
 #define HERRAMIENTAS_H
 
 
-#include "funciones/pila.h"
-#include "funciones/scanner.h"
+#include "funciones/externas/pila.h"
+#include "funciones/externas/scanner.h"
 
 
 void mensaje(const char *titulo, const char *mensaje);
