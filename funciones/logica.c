@@ -267,7 +267,7 @@ int obtener_id_escenario(void)
  * @return 1 si el escenario existe y está activo,
  *         0 en caso contrario.
  */
-int buscar_escenario_id(int id)
+int buscar_escenario_id(int id, Escenario* escenario_encontrado)
 {
 	FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "rb");
 	int encontrado = 0;
@@ -280,6 +280,10 @@ int buscar_escenario_id(int id)
 			if(aux.id == id && aux.escenario_activo == 1)
 			{
 				encontrado = 1;
+
+				*escenario_encontrado = aux;
+
+				break;
 			}
 
 		}
@@ -383,7 +387,7 @@ int obtener_id_artista(void)
  * @param id Identificador del artista a buscar.
  * @return 1 si el artista existe y está activo, 0 en caso contrario.
  */
-int buscar_artista_id(int id)
+int buscar_artista_id(int id, Artista* artista_encontrado)
 {
 	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "rb");
 	Artista aux;
@@ -396,6 +400,9 @@ int buscar_artista_id(int id)
 			if(aux.id == id && aux.activo == 1)
 			{
 				encontrado = 1;
+				
+                *artista_encontrado = aux;
+
 				break;
 			}
 		}

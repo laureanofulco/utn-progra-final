@@ -639,7 +639,7 @@ void alta_presentacion(void)
 		printf(" Ingrese id artista: ");
 		aux.idArtista = scanInt();
 		
-		if(!buscar_artista_id(aux.idArtista))
+		if(!buscar_artista_id(aux.idArtista, NULL))
 		{
 			mensaje("ERROR", "No se encontro el artista");
 			fclose(archivo);
@@ -649,7 +649,7 @@ void alta_presentacion(void)
 		printf(" Ingrese id del escenario: ");
 		aux.idEscenario = scanInt();
 		
-		if(!buscar_escenario_id(aux.idEscenario))
+		if(!buscar_escenario_id(aux.idEscenario, NULL))
 		{
 			mensaje("ERROR", "No se encontro el escenario");
 			fclose(archivo);
@@ -721,7 +721,7 @@ void listar_presentaciones(void)
             printf("\n----------------------\n");
             printf("ID: %d\n", aux.id_presentacion);
 
-            if(buscar_artista_id(aux.idArtista) != 1)
+            if(buscar_artista_id(aux.idArtista, &artista) != 1)
 			{
                 printf("Artista: %s\n", artista.nombre);
             }
@@ -730,7 +730,7 @@ void listar_presentaciones(void)
                 printf("Artista: [no encontrado]\n");
             }
 
-            if(buscar_escenario_id(aux.idEscenario) != -1)
+            if(buscar_escenario_id(aux.idEscenario, &escenario) != -1)
 			{
                 printf("Escenario: %s\n", escenario.nombre);
             }
