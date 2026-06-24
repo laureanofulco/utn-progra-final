@@ -11,6 +11,7 @@ void alta_admin(void);
 // Horarios
 int validar_horario(Horario h);
 Horario crear_horario(int horas, int minutos);
+int comparar_horario(Horario h1, Horario h2);
 
 
 #endif

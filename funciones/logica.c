@@ -135,3 +135,34 @@ Horario crear_horario(int horas, int minutos)
 	return h;
 }
 
+/**
+ * @brief Compara dos horarios.
+ *
+ * @param h1 Primer horario.
+ * @param h2 Segundo horario.
+ * @returns 1 si h1 es posterior a h2, -1 si h1 es anterior a h2, 0 si ambos horarios son iguales.
+ */
+int comparar_horario(Horario h1, Horario h2)
+{	
+	if(h1.horas > h2.horas)
+    {
+		return 1;
+	}
+	
+	if(h1.horas < h2.horas)
+    {
+		return -1;
+	}
+	
+	if(h1.minutos > h2.minutos)
+    {
+		return 1;
+	}
+	
+	if(h1.minutos < h2.minutos)
+    {
+		return -1;
+	}
+	
+	return 0;
+}
