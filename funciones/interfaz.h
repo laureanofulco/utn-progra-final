@@ -15,6 +15,6 @@ void modificar_escenario(void);
 
 // Artistas
 void alta_artista(void);
-
+void listar_artista(void);
 
 #endif

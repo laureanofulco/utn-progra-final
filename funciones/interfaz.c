@@ -341,3 +341,47 @@ void alta_artista(void)
 	}
 }
 
+/**
+ * @brief Lista todos los artistas activos.
+ *
+ * Recorre el archivo de artistas y muestra únicamente
+ * aquellos cuyo campo "activo" es igual a 1.
+ * Si no existen artistas activos, informa el error.
+ */
+void listar_artista(void)
+{
+	int activos = 0;
+	
+	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "rb");
+	Artista aux;
+
+	if(archivo != NULL)
+    {
+		while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
+        {
+			if(aux.activo == 1)
+            { 
+				activos = 1;
+			
+				printf("\n-----------------------------\n");
+				printf(" - Id: %d -\n", aux.id);
+				printf(" - Nombre: %s -\n", aux.nombre);
+				printf(" - Genero: %s     -\n", aux.genero);
+				printf(" - Estado: Activo -\n");
+				printf("\n-----------------------------\n");
+			}
+		}
+		
+		if(activos == 0)
+        {
+			mensaje("ERROR", "No hay artistas activos");
+		}
+		
+		fclose(archivo); 
+	}
+    else
+    {
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+}
+

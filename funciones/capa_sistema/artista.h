@@ -18,7 +18,7 @@ typedef struct st_Artista{
 void alta_artista();		//
 void baja_artista();
 int modificar_artista();
-void listar_artista();
+void listar_artista();				//
 int buscar_artista(char nombre[]);
 int validar_artista(char nombre[]);
 int obtener_id();						//
