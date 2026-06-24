@@ -21,7 +21,7 @@ int modificar_artista();
 void listar_artista();
 int buscar_artista(char nombre[]);
 int validar_artista(char nombre[]);
-int obtener_id();
+int obtener_id();						//
 int buscar_artista_id(int id);
 
 // Guardas

@@ -317,19 +317,26 @@ void baja_escenario(void)
  *
  * @return El último identificador encontrado más uno.
  */
-int obtener_id(){
-	FILE * archivo = fopen(ARCHIVO_ARTISTAS, "rb");
+int obtener_id_artista(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "rb");
 	int ultimoId = 0;
 	Artista aux;
 	
-	if(archivo != NULL){
-		while(fread(&aux, sizeof(Artista), 1, archivo) > 0){
-			if(aux.id > ultimoId){
+	if(archivo != NULL)
+	{
+		while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
+		{
+			if(aux.id > ultimoId)
+			{
 				ultimoId = aux.id;
 			}
 		}
+
 		fclose(archivo);	
-	}else{
+	}
+	else
+	{
 		mensaje("ERROR", "No se pudo abrir el archivo");
 	}
 	
