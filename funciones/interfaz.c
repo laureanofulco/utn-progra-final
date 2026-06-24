@@ -1,8 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include "funciones/herramientas.h"
-#include "funciones/dominio.h"
-#include "funciones/logica.h"
 #include "funciones/interfaz.h"
 
 #define ARCHIVO_ADMINS "archivos/admins.dat"
@@ -49,4 +44,29 @@ void alta_admin(void)
 		mensaje("ERROR", "No se pudo abrir el archivo");
 		pausarf();
 	}
+}
+
+/**
+ * @brief Muestra todos los administradores registrados.
+ *
+ * Recorre el archivo de administradores e imprime los nombres
+ * de cada registro almacenado.
+ */
+void ver_admins(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ADMINS, "rb");
+
+	Administrador aux;
+	
+	if(archivo != NULL)
+    {
+		while(fread(&aux, sizeof(Administrador), 1, archivo) > 0){
+			printf(" - Nombre: %s -\n", aux.nombre);
+		}
+		fclose(archivo);
+	}else{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+	
+	getchar();
 }

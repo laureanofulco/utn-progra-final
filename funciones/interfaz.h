@@ -1,6 +1,8 @@
 #ifndef INTERFAZ_H
 #define INTERFAZ_H
 
+#include "funciones/logica.h"
+
 void alta_admin(void);
 
 
