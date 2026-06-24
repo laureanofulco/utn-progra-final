@@ -3,8 +3,13 @@
 
 #include "funciones/logica.h"
 
+// Administradores
 void alta_admin(void);
 void ver_admins(void);
 int modificar_admin(void);
+
+// Escenarios
+void alta_escenario(void);
+
 
 #endif

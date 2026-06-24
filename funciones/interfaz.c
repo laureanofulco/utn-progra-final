@@ -1,5 +1,7 @@
 #include "funciones/interfaz.h"
 
+
+/********* Administradores *********/
 /**
  * @brief Registra un nuevo administrador.
  *
@@ -163,6 +165,8 @@ int modificar_admin(void)
 	return 1;
 }
 
+
+/********* Escenarios *********/
 /**
  * @brief Registra un nuevo escenario.
  *
