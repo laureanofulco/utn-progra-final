@@ -27,6 +27,7 @@ int obtener_id_presentacion(void);
 void alta_presentacion(void);
 void listar_presentaciones(void);
 void baja_presentacion(void);
+void modificar_presentacion(void);
 
 // Menúes
 void menu_principal(void);

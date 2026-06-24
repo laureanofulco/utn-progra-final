@@ -898,6 +898,153 @@ void baja_presentacion(void)
 	}
 }
 
+/**
+ * @brief Modifica los datos de una presentación existente.
+ *
+ * Busca una presentación activa por su ID y permite modificar
+ * el artista, el escenario, el horario de inicio o la duración.
+ * Los cambios se validan antes de ser guardados en el archivo.
+ */
+void modificar_presentacion(void)
+{
+    FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "r+b");
+    Presentacion aux;
+    Artista art_aux;
+    Escenario esc_aux;
+    int encontrado = 0;
+    int id;
+    int opc;
+
+    if(archivo == NULL)
+    {
+        mensaje("ERROR", "No se pudo abrir el archivo de presentaciones");
+        return;
+    }
+
+    printf("- MODIFICAR PRESENTACION -\n");
+    printf(" Ingrese ID de la presentacion: ");
+    id = scanInt();
+
+    while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+    {
+        if(aux.id_presentacion == id && aux.presentacion_activo == 1)
+        {
+            encontrado = 1;
+            
+            do {
+                limpiarf();
+                printf("=== Presentacion Encontrada (ID: %d) ===\n", aux.id_presentacion);
+                printf(" 1 - Cambiar ID Artista (Actual: %d)\n", aux.idArtista);
+                printf(" 2 - Cambiar ID Escenario (Actual: %d)\n", aux.idEscenario);
+                printf(" 3 - Cambiar Horario de Inicio (Actual: %02d:%02d)\n", aux.inicio.horas, aux.inicio.minutos);
+                printf(" 4 - Cambiar Duracion (Actual: %02d:%02d)\n", aux.duracion.horas, aux.duracion.minutos);
+                printf(" 0 - Guardar cambios y salir\n");
+
+                printf("\n Opcion: ");
+                opc = scanInt();
+
+                switch(opc)
+                {
+                    case 1:
+                    {
+                        int nuevoIdArtista;
+                        printf("Nuevo ID Artista: ");
+                        nuevoIdArtista = scanInt();
+                        
+                        if(buscar_artista_id(nuevoIdArtista, &art_aux))
+                        {
+                            aux.idArtista = nuevoIdArtista;
+                            mensaje("OK", "Artista modificado temporalmente");
+                        }
+                        else
+                        {
+                            mensaje("ERROR", "El artista no existe o no esta activo");
+                        }
+                        pausarf();
+                        break;
+                    }
+                    case 2:
+                    {
+                        int nuevoIdEscenario;
+                        printf("Nuevo ID Escenario: ");
+                        nuevoIdEscenario = scanInt();
+                        
+                        if(buscar_escenario_id(nuevoIdEscenario, &esc_aux))
+                        {
+                            aux.idEscenario = nuevoIdEscenario;
+                            mensaje("OK", "Escenario modificado temporalmente");
+                        }
+                        else
+                        {
+                            mensaje("ERROR", "El escenario no existe o no esta activo");
+                        }
+                        pausarf();
+                        break;
+                    }
+                    case 3:
+                    {
+                        Horario nuevoInicio;
+                        printf("\n-- NUEVA HORA DE INICIO --\n");
+
+                        printf(" Ingrese hora: ");
+                        nuevoInicio.horas = scanInt();
+
+                        printf(" Ingrese minutos: ");
+                        nuevoInicio.minutos = scanInt();
+                        
+                        if(validar_horario(nuevoInicio))
+                        {
+                            aux.inicio = nuevoInicio;
+                            mensaje("OK", "Horario de inicio modificado temporalmente");
+                        }
+                        else
+                        {
+                            mensaje("ERROR", "Horario invalido (debe ser entre 00:00 y 23:59)");
+                        }
+                        pausarf();
+                        break;
+                    }
+                    case 4:
+                    {
+                        printf("\n-- NUEVA DURACION --\n");
+
+                        printf(" Ingrese hora: ");
+                        aux.duracion.horas = scanInt();
+                        
+						printf(" Ingrese minutos: ");
+                        aux.duracion.minutos = scanInt();
+                        
+                        mensaje("OK", "Duracion modificada temporalmente");
+                        pausarf();
+                        break;
+                    }
+                    case 0:
+                        break;
+                    default:
+                        mensaje("ERROR", "Opcion invalida");
+                        pausarf();
+                        break;
+                }
+            } while(opc != 0);
+
+            fseek(archivo, -(long)sizeof(Presentacion), SEEK_CUR);
+            fwrite(&aux, sizeof(Presentacion), 1, archivo);
+            break;
+        }
+    }
+
+    fclose(archivo);
+
+    if(encontrado == 0)
+    {
+        mensaje("ERROR", "No se encontro ninguna presentacion activa con ese ID");
+    }
+    else
+    {
+        mensaje("OK", "Presentacion actualizada correctamente");
+    }
+}
+
 
 // Menúes
 void menu_principal(void)
@@ -1145,13 +1292,13 @@ void menu_presentaciones(void)
 			case 2:
 			{
 				limpiarf();
-				
+				baja_presentacion();
 				pausarf();
 				break;
 			}
 			case 3:{
 				limpiarf();
-				
+				modificar_presentacion();
 				pausarf();
 				break;
 			}
