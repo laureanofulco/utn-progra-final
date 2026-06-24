@@ -74,3 +74,94 @@ void ver_admins(void)
 	
 	pausarf();
 }
+
+
+/**
+ * @brief Modifica los datos de un administrador.
+ *
+ * Busca un administrador por nombre y permite modificar
+ * su nombre, contraseña o ambos. Los cambios se guardan
+ * directamente en el archivo.
+ *
+ * @return 1 si la operación finaliza correctamente,
+ *         0 si ocurre un error al abrir el archivo.
+ *
+ * @see cifrar()
+ */
+int modificar_admin(void)
+{
+	Administrador admin_aux;
+	char nombre[50];
+	int opc_mod;
+	int encontrado = 0;
+	
+	printf("==== Modificar admin ====\n\n");
+	printf(" Ingrese el nombre: ");
+	scanString(nombre, 50);
+	
+	FILE* archivo = fopen(ARCHIVO_ADMINS, "r+b");
+	
+	if(archivo == NULL)
+    {
+		mensaje("ERROR", "No se pudo abrir el archivo");
+		return 0;
+	}
+	
+	while(fread(&admin_aux, sizeof(Administrador), 1, archivo) > 0)
+    {
+		if(strcmp(admin_aux.nombre, nombre) == 0)
+        {
+			encontrado = 1;
+			
+			printf("=== Admin encontrado ===\n");
+			printf(" nombre    | password   \n");
+			printf(" %s        | %s         \n", admin_aux.nombre, admin_aux.password);
+			
+			printf("\nQue desea modificar\n");
+			printf("1 - nombre\n2 - password\n3 - ambos\n");
+			printf("Opcion: ");
+			opc_mod = scanInt();
+			
+			switch(opc_mod)
+            {
+				case 1:
+                {
+					printf("Nuevo nombre: ");
+					scanString(admin_aux.nombre, 50); 
+					break;
+				}
+				case 2:
+                {
+					printf("Nueva contraseña: ");
+					scanString(admin_aux.password, 50);
+					break;
+				}
+				case 3:
+                {
+					printf("Nuevo nombre: ");
+					scanString(admin_aux.nombre, 50); 
+					
+					printf("\nNueva contraseña: ");
+					scanString(admin_aux.password, 50);
+					break;
+				}
+			}
+			
+			fseek(archivo, -(long)sizeof(Administrador), SEEK_CUR);
+			fwrite(&admin_aux, sizeof(Administrador), 1, archivo);
+		}
+	}
+	
+	fclose(archivo);
+	
+	if(encontrado == 0)
+    {
+		mensaje("ERROR", "Admin no encontrado");
+	}
+    else
+    {
+		mensaje("OK", "Admin modificado con exito");
+	}
+	
+	return 1;
+}

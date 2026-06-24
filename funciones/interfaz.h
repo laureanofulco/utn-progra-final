@@ -5,5 +5,6 @@
 
 void alta_admin(void);
 void ver_admins(void);
+int modificar_admin(void);
 
 #endif
