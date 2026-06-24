@@ -508,7 +508,7 @@ int modificar_artista(void)
 			if(aux.id == id && aux.activo == 1)
 			{
 				encontrado = 1;
-				printf("[Artista encontrado: %s]\n", nombre);
+				printf("[Artista encontrado: %s]\n", aux.nombre);
 				printf("Que desea modificar?\n");
 				printf(" 1 - nombre\n");
 				printf(" 2 - genero\n");
@@ -721,7 +721,7 @@ void listar_presentaciones(void)
             printf("\n----------------------\n");
             printf("ID: %d\n", aux.id_presentacion);
 
-            if(buscar_artista_id(aux.idArtista, &artista) != 1)
+            if(buscar_artista_id(aux.idArtista, &artista) == 1)
 			{
                 printf("Artista: %s\n", artista.nombre);
             }
@@ -730,7 +730,7 @@ void listar_presentaciones(void)
                 printf("Artista: [no encontrado]\n");
             }
 
-            if(buscar_escenario_id(aux.idEscenario, &escenario) != -1)
+            if(buscar_escenario_id(aux.idEscenario, &escenario) == 1)
 			{
                 printf("Escenario: %s\n", escenario.nombre);
             }

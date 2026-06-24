@@ -216,7 +216,7 @@ Duracion crear_duracion(int horas, int minutos)
 	d.horas = horas;
 	d.minutos = minutos;
 	
-	if(horas >= 0 && horas > 24 && minutos > 0 && minutos < 60)
+	if(horas >= 0 && horas < 24 && minutos > 0 && minutos < 60)
     {
 		d.esValido = 1;
 	}
@@ -281,7 +281,10 @@ int buscar_escenario_id(int id, Escenario* escenario_encontrado)
 			{
 				encontrado = 1;
 
-				*escenario_encontrado = aux;
+				if(escenario_encontrado != NULL)
+				{
+					*escenario_encontrado = aux;
+				}
 
 				break;
 			}
@@ -401,7 +404,10 @@ int buscar_artista_id(int id, Artista* artista_encontrado)
 			{
 				encontrado = 1;
 				
-                *artista_encontrado = aux;
+                if(artista_encontrado != NULL)
+				{
+					*artista_encontrado = aux;
+				}
 
 				break;
 			}
