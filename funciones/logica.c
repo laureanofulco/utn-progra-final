@@ -196,3 +196,31 @@ Duracion crear_duracion(int horas, int minutos)
 
 	return d;
 }
+
+/********* Escenarios *********/
+int obtener_id_escenario(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "rb");
+	int ultimoIdEscenario = 0;
+	Escenario aux_escenario;
+	
+	if(archivo != NULL)
+	{
+		while(fread(&aux_escenario, sizeof(Escenario), 1, archivo) > 0)
+		{
+			if(aux_escenario.id > ultimoIdEscenario)
+			{
+				ultimoIdEscenario = aux_escenario.id;
+			}
+		}
+
+		fclose(archivo);	
+
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+	
+	return ultimoIdEscenario +1;
+}

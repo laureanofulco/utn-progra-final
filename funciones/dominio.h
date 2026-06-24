@@ -1,11 +1,15 @@
 #ifndef DOMINIO_H
 #define DOMINIO_H
 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "funciones/herramientas.h"
 
+
 #define ARCHIVO_ADMINS "archivos/admins.dat"
+#define ARCHIVO_ESCENARIOS "escenarios.dat"
+
 
 typedef struct st_Administrador
 {
@@ -27,6 +31,13 @@ typedef struct stDuracion
 	int minutos;
 	int esValido;
 } Duracion;
+
+typedef struct st_Escenario
+{
+	int id;
+	char nombre[50];
+	int escenario_activo; 
+} Escenario;
 
 typedef struct st_Artista
 {

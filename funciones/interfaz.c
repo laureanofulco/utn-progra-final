@@ -162,3 +162,41 @@ int modificar_admin(void)
 	
 	return 1;
 }
+
+/**
+ * @brief Registra un nuevo escenario.
+ *
+ * Solicita el nombre del escenario, genera un identificador
+ * único y almacena el registro en el archivo de escenarios.
+ *
+ * El escenario se crea con estado activo por defecto.
+ *
+ * @see obtener_id_escenario()
+ */
+void alta_escenario(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "ab");
+	char nombreEscenario[50];
+	Escenario aux_escenario;
+	
+	if(archivo != NULL)
+    {
+		printf(" - ALTA ESCENARIO -\n");
+		printf(" Nombre: ");
+		scanString(aux_escenario.nombre, 50);
+		
+		aux_escenario.id = obtener_id_escenario();
+		aux_escenario.escenario_activo = 1;
+		
+		fwrite(&aux_escenario, sizeof(Escenario), 1, archivo);
+
+		fclose(archivo);
+
+		mensaje("OK", "Escenario creado con exito");
+	}
+    else
+    {
+		mensaje("ERROR", "No se pudo abrir el documento");
+	}	
+}
+

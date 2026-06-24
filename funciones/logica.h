@@ -16,4 +16,8 @@ int comparar_horario(Horario h1, Horario h2);
 // Duración
 Duracion crear_duracion(int horas, int minutos);
 
+// Escenarios
+int obtener_id_escenario(void);
+
+
 #endif
