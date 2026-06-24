@@ -204,3 +204,46 @@ void alta_escenario(void)
 	}	
 }
 
+/**
+ * @brief Lista todos los escenarios activos.
+ *
+ * Recorre el archivo de escenarios y muestra únicamente los
+ * registros cuyo campo escenario_activo es igual a 1.
+ *
+ * Si no existen escenarios activos, informa dicha situación.
+ */
+void listar_escenarios(void)
+{
+	int escenario_activo = 0;
+	Escenario aux_escenario;
+	
+	FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "rb");
+	if(archivo != NULL)
+    {
+		while(fread(&aux_escenario, sizeof(Escenario), 1, archivo) > 0)
+        {
+			if(aux_escenario.escenario_activo == 1)
+            { 
+				escenario_activo = 1;
+				printf("\n-----------------------------\n");
+				printf(" - Id: %d -\n", aux_escenario.id);
+				printf(" - Nombre: %s -\n", aux_escenario.nombre);
+				printf(" - Estado: Activo -\n");
+				printf("\n-----------------------------\n");
+			}
+		}
+		
+		if(escenario_activo == 0)
+        {
+			mensaje("ERROR", "No hay artistas activos");
+		}
+		
+		fclose(archivo);
+	}
+    else
+    {
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+}
+
+
