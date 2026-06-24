@@ -1,10 +1,6 @@
 #include "funciones/logica.h"
 
-#define ARCHIVO_ADMINS "archivos/admins.dat"
-
-
 /********* Administradores *********/
-
 /**
  * @brief Genera el archivo inicial de administradores.
  *
@@ -91,3 +87,51 @@ int buscar_admin(char nombre[], Administrador* admin)
 	return encontrado;
 }
 
+
+/********* Horarios *********/
+/**
+ * @brief Verifica si un horario es válido.
+ *
+ * Comprueba que las horas estén entre 0 y 23 y los
+ * minutos entre 0 y 59.
+ *
+ * @param h Horario a validar.
+ * @return 1 si el horario es válido, 0 en caso contrario.
+ */
+int validar_horario(Horario h)
+{
+	if(h.horas < 0 || h.horas > 23)
+    {
+		return 0;
+	}
+
+	if(h.minutos < 0 || h.minutos > 59)
+    {
+		return 0;
+	}
+	
+	return 1;
+}
+
+
+/**
+ * @brief Crea un horario seguro.
+ *
+ * Construye una estructura Horario a partir de horas y minutos
+ * e indica si el valor generado es válido mediante el campo
+ * esValido.
+ *
+ * @param horas Hora del día.
+ * @param minutos Minutos de la hora.
+ * @return Horario inicializado y validado.
+ */
+Horario crear_horario(int horas, int minutos)
+{
+	Horario h;
+	h.horas = horas;
+	h.minutos = minutos;
+	
+	h.esValido = validar_horario(h);
+	
+	return h;
+}

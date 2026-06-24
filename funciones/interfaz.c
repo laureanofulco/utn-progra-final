@@ -1,7 +1,5 @@
 #include "funciones/interfaz.h"
 
-#define ARCHIVO_ADMINS "archivos/admins.dat"
-
 /**
  * @brief Registra un nuevo administrador.
  *
@@ -74,7 +72,6 @@ void ver_admins(void)
 	
 	pausarf();
 }
-
 
 /**
  * @brief Modifica los datos de un administrador.
