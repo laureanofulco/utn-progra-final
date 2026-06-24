@@ -28,6 +28,7 @@ void listar_presentaciones(void);
 // Menúes
 void menu_admin(void);
 void menu_artistas(void);
+void menu_escenarios(void);
 
 
 #endif
