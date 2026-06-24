@@ -32,6 +32,7 @@
 #include "capa_sistema/validaciones.h"
 
 #include "funciones/herramientas.h"
+#include "funciones/interfaz.h"
 #include "funciones/logica.h"
 #include "funciones/dominio.h"
 
