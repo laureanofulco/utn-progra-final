@@ -20,6 +20,7 @@ int buscar_artista(char nombre[]);
 int modificar_artista(void);
 
 // Presentaciones
+int obtener_id_presentacion(void);
 void alta_presentacion(void);
 void listar_presentaciones(void);
 

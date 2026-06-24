@@ -538,6 +538,41 @@ int modificar_artista(void)
 
 /********* Presentaciones *********/
 /**
+ *@brief Obtiene siguiente id para la presentacion
+ *
+ * Recorre el archivo de presentacion buscandoe el 
+ * mayor id existente, devolviendo el valor incrementado en 1
+ * Si el archivo no existe, o no se puede abrir, devuelve 1
+ *
+ *@return el utlimo id encontrado + 1.
+*/
+int obtener_id_presentacion(void)
+{
+	FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
+	int ultimoId = 0;
+	Presentacion aux;
+	
+	if(archivo != NULL)
+	{
+		while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+		{
+			if(aux.id_presentacion > ultimoId)
+			{
+				ultimoId = aux.id_presentacion;
+			}
+		}
+
+		fclose(archivo);	
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+	
+	return ultimoId +1;
+}
+
+/**
  *@brief Permite registrar una presentacion
  *
  * Guarada los datos de presentacion en un binario
@@ -661,7 +696,7 @@ void listar_presentaciones(void)
 			{
                 printf("Escenario: [no encontrado]\n");
             }
-			
+
             printf("Inicio: %02d:%02d\n", aux.inicio.horas, aux.inicio.minutos);
             printf("Duracion: %02d:%02d\n",aux.duracion.horas, aux.duracion.minutos);
         }
