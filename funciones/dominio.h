@@ -10,6 +10,7 @@
 #define ARCHIVO_ADMINS "archivos/admins.dat"
 #define ARCHIVO_ESCENARIOS "archivos/escenarios.dat"
 #define ARCHIVO_ARTISTAS "archivos/artistas.dat"
+#define ARCHIVO_PRESENTACIONES "presentaciones.dat"
 
 
 typedef struct st_Administrador
@@ -48,6 +49,16 @@ typedef struct st_Artista
 	int activo; // 1 = activo
 } Artista;
 
+typedef struct stPresentacion
+{
+	int id_presentacion;
+	int idArtista;
+	int idEscenario;
+	Horario inicio;
+	Duracion duracion;
+	int presentacion_activo;
+		
+} Presentacion;
 
 
 #endif

@@ -535,3 +535,79 @@ int modificar_artista(void)
 	}
 }
 
+
+/********* Presentaciones *********/
+/**
+ *@brief Permite registrar una presentacion
+ *
+ * Guarada los datos de presentacion en un binario
+ *
+ *@return void
+*/
+void alta_presentacion(void)
+{
+	FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "ab");
+	Presentacion aux;
+	
+	if(archivo != NULL)
+	{
+		printf("<---- ALTA PRESENTACIONES  ---->\n");
+		printf(" Ingrese id artista: ");
+		aux.idArtista = scanInt();
+		
+		if(!buscar_artista_id(aux.idArtista))
+		{
+			mensaje("ERROR", "No se encontro el artista");
+			fclose(archivo);
+			return;
+		}
+		
+		printf(" Ingrese id del escenario: ");
+		aux.idEscenario = scanInt();
+		
+		if(!buscar_escenario_id(aux.idEscenario))
+		{
+			mensaje("ERROR", "No se encontro el escenario");
+			fclose(archivo);
+			return;
+		}
+		
+		printf("\n -- HORAD DE INCIO --\n");
+		printf(" Ingrese hora: ");
+		aux.inicio.horas = scanInt();
+		printf(" Ingrese minutos: ");
+		aux.inicio.minutos = scanInt();
+		
+		if(!validar_horario(aux.inicio))
+		{
+			mensaje("ERROR", "Horario no valido");
+			fclose(archivo);
+			return;
+		}
+		
+		printf("\n -- DURACION --\n");
+		printf(" Ingrese hora: ");
+		aux.duracion.horas = scanInt();
+		printf(" Ingrese minutos: ");
+		aux.duracion.minutos = scanInt();
+		
+		if(!validar_duracion(aux.duracion))
+		{
+			mensaje("ERROR", "Horario no valido");
+			fclose(archivo);
+			return;
+		}
+		
+		aux.id_presentacion = obtener_id_presentacion();
+		aux.presentacion_activo = 1;
+		
+		fwrite(&aux, sizeof(Presentacion), 1, archivo);
+		mensaje("OK", "Presentacion agregada existosamente");
+		fclose(archivo);
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+}
+
