@@ -754,6 +754,60 @@ void listar_presentaciones(void)
 
 
 // Menúes
+void menu_principal(void)
+{
+	int opc;
+	
+	do{
+		limpiar_pantalla();
+
+		printf("======================\n");
+		printf("         MENU         \n");
+		printf("======================\n");
+		printf(" 1 - Modo admin\n");
+		printf(" 2 - Modo usuario\n");
+		printf(" 0 - Salir\n");
+		
+		printf("\nopcion: ");
+		opc = scanInt();
+		
+		switch(opc)
+		{
+			case 1:
+			{
+				if(login_admin())
+				{
+					menu_admin();
+				}
+				else
+				{
+					menu_usuario();
+				}
+				break;
+			}
+
+			case 2:
+			{
+				menu_usuario();
+				break;
+			}
+			
+			case 0:
+			{
+				printf("Saliendo del sistema . . .\n");
+				break;
+			}
+
+			default:
+			{
+				mensaje("ERROR", "Ingrese opcion valida");
+				pausarf();
+				break;
+			}
+		}
+	} while(opc != 0);
+}
+
 void menu_admin(void)
 {
 	int opc = 0;
@@ -1085,4 +1139,5 @@ void menu_usuario(void)
 		}	
 	} while(opc != 0);
 }
+
 
