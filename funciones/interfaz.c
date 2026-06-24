@@ -258,45 +258,105 @@ void alta_escenario(void)
 }
 
 /**
- * @brief Lista todos los escenarios activos.
- *
- * Recorre el archivo de escenarios y muestra únicamente los
- * registros cuyo campo escenario_activo es igual a 1.
- *
- * Si no existen escenarios activos, informa dicha situación.
+ * @brief Lista todos los escenarios activos en orden alfabético.
+ * Utiliza memoria dinámica, ordena mediante Selección y permite exportar a .txt.
  */
 void listar_escenarios(void)
 {
-	int escenario_activo = 0;
-	Escenario aux_escenario;
-	
-	FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "rb");
-	if(archivo != NULL)
+    FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "rb");
+    if (archivo == NULL)
     {
-		while(fread(&aux_escenario, sizeof(Escenario), 1, archivo) > 0)
-        {
-			if(aux_escenario.escenario_activo == 1)
-            { 
-				escenario_activo = 1;
-				printf("\n-----------------------------\n");
-				printf(" - Id: %d -\n", aux_escenario.id);
-				printf(" - Nombre: %s -\n", aux_escenario.nombre);
-				printf(" - Estado: Activo -\n");
-				printf("\n-----------------------------\n");
-			}
-		}
-		
-		if(escenario_activo == 0)
-        {
-			mensaje("ERROR", "No hay artistas activos");
-		}
-		
-		fclose(archivo);
-	}
-    else
+        mensaje("ERROR", "No se pudo abrir el archivo de escenarios");
+        return;
+    }
+
+    int capacidad = 10;
+    int validos = 0;
+    Escenario* arreglo = (Escenario*)malloc(capacidad * sizeof(Escenario));
+    
+    if(arreglo == NULL)
     {
-		mensaje("ERROR", "No se pudo abrir el archivo");
-	}
+        mensaje("ERROR", "Fallo la asignacion inicial de memoria");
+        fclose(archivo);
+        return;
+    }
+
+    Escenario aux;
+    while(fread(&aux, sizeof(Escenario), 1, archivo) > 0)
+    {
+        if(aux.escenario_activo == 1)
+        {
+            if (validos == capacidad)
+            {
+                capacidad = capacidad + 10;
+                Escenario* temp = (Escenario*)realloc(arreglo, capacidad * sizeof(Escenario));
+                
+				if (temp == NULL)
+                {
+                    mensaje("ERROR", "Fallo al redimensionar memoria");
+                    free(arreglo);
+                    fclose(archivo);
+                    return;
+                }
+
+                arreglo = temp;
+            }
+
+            arreglo[validos] = aux;
+            validos++;
+        }
+    }
+
+    fclose(archivo);
+
+    if(validos == 0)
+    {
+        mensaje("AVISO", "No hay escenarios activos para mostrar");
+        free(arreglo);
+        return;
+    }
+
+    ordenar_escenarios_seleccion(arreglo, validos);
+
+    limpiarf();
+
+    printf("<---- LISTADO DE ESCENARIOS (A-Z) ---->\n");
+    for (int i = 0; i < validos; i++)
+    {
+        printf("\n-----------------------------\n");
+        printf(" - Id: %d\n", arreglo[i].id);
+        printf(" - Nombre: %s\n", arreglo[i].nombre);
+    }
+    printf("-----------------------------\n");
+
+    printf("\n¿Desea exportar este listado a un archivo .txt?\n");
+    printf(" 1 - Si\n");
+    printf(" 2 - No\n");
+    printf(" Opcion: ");
+    int opc = scanInt();
+
+    if (opc == 1)
+    {
+        FILE* arch_txt = fopen("archivos/escenarios.txt", "w");
+        if (arch_txt != NULL)
+        {
+            fprintf(arch_txt, "=======================================\n");
+            fprintf(arch_txt, "     LISTADO DE ESCENARIOS (A-Z)       \n");
+            fprintf(arch_txt, "=======================================\n");
+            for (int i = 0; i < validos; i++)
+            {
+                fprintf(arch_txt, "ID: %d | Nombre: %s\n", arreglo[i].id, arreglo[i].nombre);
+            }
+            fclose(arch_txt);
+            mensaje("OK", "Exportado correctamente en archivos/escenarios.txt");
+        }
+        else
+        {
+            mensaje("ERROR", "No se pudo crear el archivo de exportacion");
+        }
+    }
+
+    free(arreglo);
 }
 
 /**
@@ -443,47 +503,111 @@ void alta_artista(void)
 }
 
 /**
- * @brief Lista todos los artistas activos.
- *
- * Recorre el archivo de artistas y muestra únicamente
- * aquellos cuyo campo "activo" es igual a 1.
- * Si no existen artistas activos, informa el error.
+ * @brief Lista todos los artistas activos en orden alfabético.
+ * Utiliza memoria dinámica para cargar los registros, los ordena,
+ * los muestra en pantalla y ofrece la opción de exportarlos.
  */
 void listar_artista(void)
 {
-	int activos = 0;
-	
-	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "rb");
-	Artista aux;
+    FILE* archivo = fopen(ARCHIVO_ARTISTAS, "rb");
+    if(archivo == NULL)
+    {
+        mensaje("ERROR", "No se pudo abrir el archivo de artistas");
+        return;
+    }
 
-	if(archivo != NULL)
+    int capacidad = 10;
+    int validos = 0;
+    Artista* arreglo = (Artista*)malloc(capacidad * sizeof(Artista));
+    
+    if(arreglo == NULL)
     {
-		while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
-        {
-			if(aux.activo == 1)
-            { 
-				activos = 1;
-			
-				printf("\n-----------------------------\n");
-				printf(" - Id: %d -\n", aux.id);
-				printf(" - Nombre: %s -\n", aux.nombre);
-				printf(" - Genero: %s     -\n", aux.genero);
-				printf(" - Estado: Activo -\n");
-				printf("\n-----------------------------\n");
-			}
-		}
-		
-		if(activos == 0)
-        {
-			mensaje("ERROR", "No hay artistas activos");
-		}
-		
-		fclose(archivo); 
-	}
-    else
+        mensaje("ERROR", "Fallo la asignacion inicial de memoria");
+        fclose(archivo);
+        return;
+    }
+
+    Artista aux;
+
+    while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
     {
-		mensaje("ERROR", "No se pudo abrir el archivo");
-	}
+        if (aux.activo == 1)
+        {
+            if (validos == capacidad)
+            {
+                capacidad = capacidad + 10;
+                Artista* temp = (Artista*)realloc(arreglo, capacidad * sizeof(Artista));
+				
+                if(temp == NULL)
+                {
+                    mensaje("ERROR", "Fallo al redimensionar memoria");
+                    free(arreglo);
+                    fclose(archivo);
+                    return;
+                }
+
+                arreglo = temp;
+            }
+            
+            arreglo[validos] = aux;
+            validos++;
+        }
+    }
+
+    fclose(archivo);
+
+    if(validos == 0)
+    {
+        mensaje("AVISO", "No hay artistas activos para mostrar");
+        free(arreglo);
+        return;
+    }
+
+    ordenar_artistas_seleccion(arreglo, validos);
+
+    limpiarf();
+
+    printf("<---- LISTADO DE ARTISTAS (A-Z) ---->\n");
+
+    for(int i = 0; i < validos; i++)
+    {
+        printf("\n-----------------------------\n");
+        printf(" - Id: %d\n", arreglo[i].id);
+        printf(" - Nombre: %s\n", arreglo[i].nombre);
+        printf(" - Genero: %s\n", arreglo[i].genero);
+    }
+    printf("-----------------------------\n");
+
+    printf("\n¿Desea exportar este listado a un archivo .txt?\n");
+    printf(" 1 - Si\n");
+    printf(" 2 - No\n");
+    printf(" Opcion: ");
+    int opc = scanInt();
+
+    if(opc == 1)
+    {
+        FILE* arch_txt = fopen("archivos/artistas.txt", "w");
+        if (arch_txt != NULL)
+        {
+            fprintf(arch_txt, "=======================================\n");
+            fprintf(arch_txt, "      LISTADO DE ARTISTAS (A-Z)        \n");
+            fprintf(arch_txt, "=======================================\n");
+            for (int i = 0; i < validos; i++)
+            {
+                fprintf(arch_txt, "ID: %d | Nombre: %s | Genero: %s\n", arreglo[i].id, arreglo[i].nombre, arreglo[i].genero);
+            }
+
+            fclose(arch_txt);
+
+            mensaje("OK", "Exportado correctamente en archivos/artistas.txt");
+        }
+        else
+        {
+            mensaje("ERROR", "No se pudo crear el archivo de exportacion");
+        }
+    }
+
+    free(arreglo);
 }
 
 /**
@@ -791,62 +915,155 @@ void alta_presentacion(void)
 }
 
 /**
- *@brief permite listar todas las presentaciones activas
- *
- * Recorre el archivo presentaciones, y muestra unicamente 
- * cuyo campo "presentacion_Activo" es igual a 1.
- * Para cada presentacion, se busca y muestra la informacion
- * relacionada
- * @see buscar_artista_id 
- * @see  
- *@return void
-*/
+ * @brief Lista todas las presentaciones activas en orden cronológico.
+ * Utiliza memoria dinámica, ordena por horario de inicio y permite exportar a .txt.
+ */
 void listar_presentaciones(void)
 {
     FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
-    Presentacion aux;
-    Artista artista;
-    Escenario escenario;
-
-    if(archivo == NULL)
-	{
-        mensaje("ERROR", "No se pudo abrir el archivo");
+    if (archivo == NULL)
+    {
+        mensaje("ERROR", "No se pudo abrir el archivo de presentaciones");
         return;
     }
 
-    printf("<---- PRESENTACIONES ---->\n");
+    int capacidad = 10;
+    int validos = 0;
+    Presentacion* arreglo = (Presentacion*)malloc(capacidad * sizeof(Presentacion));
 
-    while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
-	{
-        if(aux.presentacion_activo == 1)
-		{
-            printf("\n----------------------\n");
-            printf("ID: %d\n", aux.id_presentacion);
+    if (arreglo == NULL)
+    {
+        mensaje("ERROR", "Fallo la asignacion inicial de memoria");
+        fclose(archivo);
+        return;
+    }
 
-            if(buscar_artista_id(aux.idArtista, &artista) == 1)
-			{
-                printf("Artista: %s\n", artista.nombre);
-            }
-			else
-			{
-                printf("Artista: [no encontrado]\n");
+    Presentacion aux;
+    while (fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+    {
+        if (aux.presentacion_activo == 1)
+        {
+            if (validos == capacidad)
+            {
+                capacidad = capacidad + 10;
+                Presentacion* temp = (Presentacion*)realloc(arreglo, capacidad * sizeof(Presentacion));
+                if (temp == NULL)
+                {
+                    mensaje("ERROR", "Fallo al redimensionar memoria");
+                    free(arreglo);
+                    fclose(archivo);
+                    return;
+                }
+				
+                arreglo = temp;
             }
 
-            if(buscar_escenario_id(aux.idEscenario, &escenario) == 1)
-			{
-                printf("Escenario: %s\n", escenario.nombre);
-            }
-			else
-			{
-                printf("Escenario: [no encontrado]\n");
-            }
-
-            printf("Inicio: %02d:%02d\n", aux.inicio.horas, aux.inicio.minutos);
-            printf("Duracion: %02d:%02d\n",aux.duracion.horas, aux.duracion.minutos);
+            arreglo[validos] = aux;
+            validos++;
         }
     }
 
     fclose(archivo);
+
+    if (validos == 0)
+    {
+        mensaje("AVISO", "No hay presentaciones activas para mostrar");
+        free(arreglo);
+        return;
+    }
+
+    ordenar_presentaciones_cronologico(arreglo, validos);
+
+    limpiarf();
+
+    printf("<---- LISTADO DE PRESENTACIONES (CRONOLOGICO) ---->\n");
+    
+    Artista artista;
+    Escenario escenario;
+
+    for (int i = 0; i < validos; i++)
+    {
+        printf("\n----------------------\n");
+        printf("ID Presentacion: %d\n", arreglo[i].id_presentacion);
+
+        if (buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
+        {
+            printf("Artista: %s\n", artista.nombre);
+        }
+        else
+        {
+            printf("Artista: [Dado de baja o no encontrado]\n");
+        }
+
+        if (buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
+        {
+            printf("Escenario: %s\n", escenario.nombre);
+        }
+        else
+        {
+            printf("Escenario: [Dado de baja o no encontrado]\n");
+        }
+
+        printf("Inicio: %02d:%02d\n", arreglo[i].inicio.horas, arreglo[i].inicio.minutos);
+        printf("Duracion: %02d:%02d\n", arreglo[i].duracion.horas, arreglo[i].duracion.minutos);
+    }
+    printf("----------------------\n");
+
+    printf("\n¿Desea exportar este listado a un archivo .txt?\n");
+    printf(" 1 - Si\n");
+    printf(" 2 - No\n");
+    printf(" Opcion: ");
+    int opc = scanInt();
+
+    if(opc == 1)
+    {
+        FILE* arch_txt = fopen("archivos/presentaciones.txt", "w");
+
+        if(arch_txt != NULL)
+        {
+            fprintf(arch_txt, "========================================================\n");
+            fprintf(arch_txt, "      LISTADO DE PRESENTACIONES (CRONOLOGICO)           \n");
+            fprintf(arch_txt, "========================================================\n\n");
+            
+            for(int i = 0; i < validos; i++)
+            {
+                fprintf(arch_txt, "ID: %d\n", arreglo[i].id_presentacion);
+                
+                if (buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
+                {
+                    fprintf(arch_txt, "Artista: %s\n", artista.nombre);
+                }
+                else
+                {
+                    fprintf(arch_txt, "Artista: [No encontrado]\n");
+                }
+
+                if (buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
+                {
+                    fprintf(arch_txt, "Escenario: %s\n", escenario.nombre);
+                }
+                else
+                {
+                    fprintf(arch_txt, "Escenario: [No encontrado]\n");
+                }
+
+                fprintf(arch_txt, "Inicio: %02d:%02d | Duracion: %02d:%02d\n", 
+                        arreglo[i].inicio.horas, arreglo[i].inicio.minutos,
+                        arreglo[i].duracion.horas, arreglo[i].duracion.minutos);
+                fprintf(arch_txt, "--------------------------------------------------------\n");
+            }
+            
+			fclose(arch_txt);
+            
+			mensaje("OK", "Exportado correctamente en archivos/presentaciones.txt");
+        }
+        else
+        {
+            mensaje("ERROR", "No se pudo crear el archivo de exportacion");
+        }
+    }
+
+    free(arreglo);
 }
 
 /**
