@@ -403,6 +403,52 @@ int validar_artista(char nombre[])
 }
 
 
+// Presentaciones
+/**
+ * @brief Verifica si un nuevo horario se solapa con presentaciones existentes.
+ * * Compara los intervalos de tiempo convirtiéndolos a minutos totales.
+ * @return 0 si está libre, 1 si el artista está ocupado, 2 si el escenario está ocupado.
+ */
+int verificar_solapamiento(int id_artista, int id_escenario, Horario inicio, Duracion duracion, int id_presentacion_omitir)
+{
+    FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
+    if (archivo == NULL)
+	{
+		return 0;
+	} 
+
+    Presentacion aux;
+    
+    int ini_nuevo = (inicio.horas * 60) + inicio.minutos;
+    int fin_nuevo = ini_nuevo + (duracion.horas * 60) + duracion.minutos;
+
+    while (fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+    {
+        if (aux.presentacion_activo == 1 && aux.id_presentacion != id_presentacion_omitir)
+        {
+            int ini_existente = (aux.inicio.horas * 60) + aux.inicio.minutos;
+            int fin_existente = ini_existente + (aux.duracion.horas * 60) + aux.duracion.minutos;
+
+            if (ini_nuevo < fin_existente && ini_existente < fin_nuevo)
+            {
+                if (aux.idArtista == id_artista) {
+                    fclose(archivo);
+                    return 1;
+                }
+                if (aux.idEscenario == id_escenario) {
+                    fclose(archivo);
+                    return 2;
+                }
+            }
+        }
+    }
+    
+    fclose(archivo);
+
+    return 0;
+}
+
+
 // Ordenamientos
 /**
  * @brief Ordena un arreglo dinámico de Artistas alfabéticamente por nombre.
