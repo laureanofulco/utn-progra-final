@@ -13,5 +13,8 @@ void alta_escenario(void);
 void listar_escenarios(void);
 void modificar_escenario(void);
 
+// Artistas
+void alta_artista(void);
+
 
 #endif

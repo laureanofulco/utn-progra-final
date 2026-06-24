@@ -291,3 +291,53 @@ void modificar_escenario(void)
 	}
 }
 
+
+/********* Artistas *********/
+/**
+ * @brief Registra un nuevo artista en el sistema.
+ *
+ * Solicita al usuario el nombre y género del artista,
+ * normaliza los datos ingresados, asigna un identificador
+ * único y almacena el registro en el archivo de artistas.
+ *
+ * El artista se crea con estado activo por defecto.
+ *
+ * @see obtener_id()
+ * @see convertir_minuscula()
+ */
+
+void alta_artista(void)
+{
+	Artista aux;
+	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "ab");
+	char nombre_archivo[50];
+	char nombre[50];
+	char genero[50];
+	
+	if(archivo != NULL)
+    {
+		printf("\n- Cargar artista -\n");
+		printf(" Nombre: ");
+		scanString(nombre, 50);
+		printf("\n Genero: ");
+		scanString(genero, 50);
+		
+		strcpy(aux.nombre, nombre);
+		strcpy(aux.genero, genero);
+		aux.id = obtener_id();
+		aux.activo = 1;
+		
+		fwrite(&aux, sizeof(Artista), 1, archivo);
+
+		fclose(archivo);
+
+		mensaje("OK", "Artista guardado con exito");
+
+		pausarf();
+	}
+    else
+    {
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+}
+

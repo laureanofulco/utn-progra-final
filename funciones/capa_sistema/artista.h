@@ -15,7 +15,7 @@ typedef struct st_Artista{
 }Artista;
 
 // Funciones
-void alta_artista();
+void alta_artista();		//
 void baja_artista();
 int modificar_artista();
 void listar_artista();
