@@ -431,6 +431,10 @@ int verificar_solapamiento(int id_artista, int id_escenario, Horario inicio, Dur
 
             if(fin_nuevo <= ini_existente || ini_nuevo >= fin_existente)	// Esto es cuándo no se chocan: o la nueva termina antes o la nueva empieza después
             {
+				// No chocan, no hacemos nada
+			}
+			else
+			{
                 if(aux.idArtista == id_artista)
 				{
                     fclose(archivo);

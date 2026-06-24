@@ -755,6 +755,8 @@ int modificar_artista(void)
 	{
 		mensaje("ERROR", "No se pudo encontrar el artista");
 	}
+
+    return 1;
 }
 
 /**
@@ -1878,14 +1880,14 @@ void menu_presentaciones(void)
 			{
 				limpiarf();
 				buscar_presentaciones_por_artista();
-				getchar();
+				pausarf();
 				break;
 			}
 			case 6:
 			{
 				limpiarf();
 				buscar_presentaciones_por_escenario();
-				getchar();
+				pausarf();
 				break;
 			}
 		}
