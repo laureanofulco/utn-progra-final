@@ -40,4 +40,7 @@ void menu_presentaciones(void);
 void menu_administracion(void);
 void menu_usuario(void);
 
+// Reportes
+void mostrar_reporte_general(void);
+
 #endif

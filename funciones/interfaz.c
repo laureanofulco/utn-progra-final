@@ -153,6 +153,7 @@ int modificar_admin(void)
 			
 			fseek(archivo, -(long)sizeof(Administrador), SEEK_CUR);
 			fwrite(&admin_aux, sizeof(Administrador), 1, archivo);
+			break;
 		}
 	}
 	
@@ -1476,11 +1477,10 @@ void menu_administracion(void)
 		limpiarf();
 
 		printf("==== Administracion ====\n");
-        printf("1 - Reportes\n");
-        printf("2 - Exportar datos\n");
-        printf("3 - Crear admin\n");
-        printf("4 - Listar admins\n");
-        printf("5 - Modificar admin\n"); 
+        printf("1 - Reporte general\n");
+        printf("2 - Crear admin\n");
+        printf("3 - Listar admins\n");
+        printf("4 - Modificar admin\n"); 
         printf("0 - Volver\n");
         
 		printf(" opcion: ");
@@ -1491,33 +1491,23 @@ void menu_administracion(void)
         	case 1:
 			{
         		limpiarf();
-        		printf("[ADMIN] Generar reportes");
+        		mostrar_reporte_general();
 				break;
 			}
-
-			case 2:
-			{
+			
+			case 2:{
 				limpiarf();
-
+				alta_admin();
 				break;
 			}
 			
 			case 3:{
 				limpiarf();
-				printf("[ADMIN] crear administrador\n");
-				alta_admin();
-				break;
-			}
-			
-			case 4:{
-				limpiarf();
-				printf("[ADMIN] ver lista de admins\n");
 				ver_admins();
 				break;
 			}
-			case 5:{
+			case 4:{
 				limpiarf();
-				printf("[ADMIN] Modificar admin\n");
 				modificar_admin();
 				pausarf();
 				break;
@@ -1552,8 +1542,6 @@ void menu_usuario(void)
 		printf(" 9 - Filtrar por escenario\n");
 		printf(" 10 - Filtrar por fecha\n");	
 		printf(" 11 - Ver horarios\n");
-		printf(" 12 - Ver reportes generados\n");
-		printf(" 13 - Consultar información exportada\n");
 		printf(" 0 - volver\n");
 
 		printf(" opcion: ");
@@ -1575,4 +1563,73 @@ void menu_usuario(void)
 	} while(opc != 0);
 }
 
+
+// Reportes
+/**
+ * @brief Genera y muestra un reporte con estadísticas generales del sistema.
+ *
+ * Recorre los archivos de artistas, escenarios y presentaciones para
+ * contar cuántos registros se encuentran actualmente activos y muestra
+ * un resumen consolidado en pantalla.
+ */
+void mostrar_reporte_general(void)
+{
+    FILE* f_artistas = fopen(ARCHIVO_ARTISTAS, "rb");
+    FILE* f_escenarios = fopen(ARCHIVO_ESCENARIOS, "rb");
+    FILE* f_presentaciones = fopen(ARCHIVO_PRESENTACIONES, "rb");
+
+    int contador_artistas = 0;
+    int contador_escenarios = 0;
+    int contador_presentaciones = 0;
+
+    if (f_artistas != NULL)
+    {
+        Artista aux_art;
+        while (fread(&aux_art, sizeof(Artista), 1, f_artistas) > 0)
+        {
+            if (aux_art.activo == 1)
+            {
+                contador_artistas++;
+            }
+        }
+
+        fclose(f_artistas);
+    }
+
+    if (f_escenarios != NULL)
+    {
+        Escenario aux_esc;
+        while(fread(&aux_esc, sizeof(Escenario), 1, f_escenarios) > 0)
+        {
+            if (aux_esc.escenario_activo == 1)
+            {
+                contador_escenarios++;
+            }
+        }
+
+        fclose(f_escenarios);
+    }
+
+    if (f_presentaciones != NULL)
+    {
+        Presentacion aux_pres;
+        while(fread(&aux_pres, sizeof(Presentacion), 1, f_presentaciones) > 0)
+        {
+            if (aux_pres.presentacion_activo == 1)
+            {
+                contador_presentaciones++;
+            }
+        }
+
+        fclose(f_presentaciones);
+    }
+
+    printf("========================================\n");
+    printf("       ESTADISTICAS DEL FESTIVAL        \n");
+    printf("========================================\n\n");
+    printf("  -> Total de Artistas Activos:       %d\n", contador_artistas);
+    printf("  -> Total de Escenarios Activos:     %d\n", contador_escenarios);
+    printf("  -> Total de Presentaciones Activas: %d\n", contador_presentaciones);
+    printf("\n========================================\n");
+}
 
