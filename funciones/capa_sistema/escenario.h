@@ -11,7 +11,7 @@ typedef struct st_Escenario{
 
 // Funciones
 void alta_escenario();		//
-void baja_escenario();
+void baja_escenario();	//
 void modificar_escenario();	//
 void listar_escenarios();		//
 int obtener_id_escenario();		//

@@ -257,3 +257,51 @@ int buscar_escenario_id(int id)
 	return encontrado;
 }
 
+/**
+ * @brief Realiza la baja lógica de un escenario.
+ *
+ * Solicita el identificador de un escenario activo y modifica
+ * su estado estableciendo el campo escenario_activo en 0.
+ *
+ * El registro permanece almacenado en el archivo.
+ */
+void baja_escenario(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "r+b");
+	Escenario aux_escenario;
+	int encontrado = 0;
+	int id;
+		
+	if(archivo != NULL)
+	{
+		printf("id del escenario: ");
+		id = scanInt();
+
+		while(fread(&aux_escenario, sizeof(Escenario), 1, archivo) > 0)
+		{
+			if(aux_escenario.id == id && aux_escenario.escenario_activo == 1)
+			{
+				aux_escenario.escenario_activo = 0;
+
+				fseek(archivo, -(long)sizeof(Escenario), SEEK_CUR);
+				fwrite(&aux_escenario, sizeof(Escenario), 1, archivo);
+				
+				encontrado = 1;
+				break;
+			}
+		}
+
+		fclose(archivo);
+
+		mensaje("OK", "Escenario dado de baja exitosamente");
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+	
+	if(!encontrado){
+		mensaje("ERROR", "No se encontro el escenario");
+	}
+}
+

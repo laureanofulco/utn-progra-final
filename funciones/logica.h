@@ -19,6 +19,7 @@ Duracion crear_duracion(int horas, int minutos);
 // Escenarios
 int obtener_id_escenario(void);
 int buscar_escenario_id(int id);
+void baja_escenario(void);
 
 
 #endif
