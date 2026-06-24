@@ -25,4 +25,8 @@ int obtener_id_presentacion(void);
 void alta_presentacion(void);
 void listar_presentaciones(void);
 
+// Menúes
+void menu_admin(void);
+
+
 #endif

@@ -752,3 +752,62 @@ void listar_presentaciones(void)
     fclose(archivo);
 }
 
+
+// Menúes
+void menu_admin(void)
+{
+	int opc = 0;
+
+	do
+	{
+		limpiar_pantalla();
+		printf("===================\n");
+		printf("    MENU ADMIN     \n");
+		printf("===================\n");
+		printf(" 1 - Gestion de artistas\n");
+		printf(" 2 - Gestion de escenarios\n");
+		printf(" 3 - Gestion de presentaciones\n");
+		printf(" 4 - Administracion\n");
+		printf(" 0 - Cerrar sesion\n");
+		
+		printf(" opcion: ");
+		opc = scanInt();
+		
+		switch(opc)
+		{
+			case 0:
+			{
+				printf("Cerrando sesion . . .");
+				break;
+			}
+			case 1:
+			{
+				menu_artistas();
+				break;
+			}
+			case 2:
+			{
+				menu_escenarios();
+				break;
+			}
+			case 3:
+			{
+				menu_presentaciones();
+				break;
+			}
+			case 4:
+			{
+				administracion();
+				break;
+			}
+			
+			default:
+			{
+				mensaje("Error", "Ingrese una opcion valida");
+				pausarf();
+				break;
+			}
+	   }
+	} while(opc != 0);
+}
+
