@@ -811,3 +811,54 @@ void menu_admin(void)
 	} while(opc != 0);
 }
 
+void menu_artistas(void)
+{
+	int menu_opcion;
+	
+	do
+	{
+		limpiar_pantalla();
+
+		printf("==== Gestion de artistas ====\n");
+        printf("1 - Alta\n");
+        printf("2 - Baja\n");
+        printf("3 - Modificar\n");
+        printf("4 - Listar\n");
+        printf("0 - Volver\n");
+        
+		printf(" opcion: ");
+        menu_opcion = scanInt();
+        
+        switch(menu_opcion)
+		{
+        	case 1:
+			{
+        		limpiar_pantalla();
+        		alta_artista();
+				break;
+			}
+			case 2:
+			{
+				limpiar_pantalla();
+				baja_artista();
+				pausarf();
+				break;
+			}
+			case 3:
+			{
+				limpiar_pantalla();
+				modificar_artista();
+				pausarf();
+				break;
+			}
+			case 4:
+			{
+				limpiar_pantalla();
+				listar_artista();
+				pausarf();
+				break;
+			}
+		}
+		
+	} while(menu_opcion != 0);
+}
