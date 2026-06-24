@@ -88,6 +88,32 @@ int buscar_admin(char nombre[], Administrador* admin)
 	return encontrado;
 }
 
+/**
+ * @brief Verifica las credenciales de un administrador.
+ *
+ * Busca el administrador indicado y compara la contraseña
+ * cifrada recibida con la almacenada en el sistema.
+ *
+ * @param nombre Nombre del administrador.
+ * @param pass_cifrada Contraseña cifrada a validar.
+ * @return 1 si las credenciales son correctas, 0 en caso contrario.
+ *
+ * @see buscar_admin()
+ */
+int validar_admin(char nombre[], char contraseña[])
+{
+	Administrador admin;
+	
+	if(buscar_admin(nombre, &admin))
+	{
+		if(strcmp(admin.password, contraseña) == 0)
+		{
+			return 1;	
+		}
+	}
+	return 0;
+}
+
 
 /********* Horarios *********/
 /**
@@ -371,6 +397,39 @@ int buscar_artista_id(int id)
 		fclose(archivo);
 	}
 	return encontrado;
+}
+
+/**
+ * @brief Valida si un artista ya se encuentra registrado.
+ *
+ * Compara el nombre recibido con los nombres almacenados
+ * en el archivo de artistas para determinar si ya existe.
+ *
+ * @param nombre Nombre del artista a validar.
+ * @return 1 si el artista existe, 0 en caso contrario.
+ */
+int validar_artista(char nombre[])
+{
+	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "rb");
+	Artista aux;
+	int existe = 0;
+
+	if(archivo != NULL)
+	{
+		while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
+		{
+			if(strcmp(nombre, aux.nombre) == 0)
+			{
+				existe = 1;
+			}
+		}
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+
+	return existe;
 }
 
 /**

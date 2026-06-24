@@ -6,7 +6,7 @@
 // Administradores
 void generar_archivo_admins(void);
 int buscar_admin(char nombre[], Administrador *admin);
-void alta_admin(void);
+int validar_admin(char nombre[], char contraseña[]);
 
 // Horarios
 int validar_horario(Horario h);
@@ -24,6 +24,7 @@ void baja_escenario(void);
 // Artistas
 int obtener_id_artista(void);
 int buscar_artista_id(int id);
+int validar_artista(char nombre[]);
 void baja_artista(void);
 
 
