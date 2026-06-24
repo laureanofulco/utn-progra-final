@@ -60,13 +60,17 @@ void ver_admins(void)
 	
 	if(archivo != NULL)
     {
-		while(fread(&aux, sizeof(Administrador), 1, archivo) > 0){
+		while(fread(&aux, sizeof(Administrador), 1, archivo) > 0)
+        {
 			printf(" - Nombre: %s -\n", aux.nombre);
 		}
-		fclose(archivo);
-	}else{
+		
+        fclose(archivo);
+	}
+    else
+    {
 		mensaje("ERROR", "No se pudo abrir el archivo");
 	}
 	
-	getchar();
+	pausarf();
 }
