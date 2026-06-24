@@ -1134,16 +1134,17 @@ void baja_presentacion(void)
 /**
  * @brief Modifica los datos de una presentación existente.
  *
- * Busca una presentación activa por su ID y permite modificar
- * el artista, el escenario, el horario de inicio o la duración.
- * Los cambios se validan antes de ser guardados en el archivo.
+ * Busca una presentación activa por su ID y permite modificarla.
+ * Cada modificación propuesta (cambio de artista, escenario u horario)
+ * pasa por el motor de validación para garantizar que no genere
+ * solapamientos de tiempo antes de ser aplicada temporalmente.
  */
 void modificar_presentacion(void)
 {
     FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "r+b");
     Presentacion aux;
-    Artista art_aux;
-    Escenario esc_aux;
+    Artista art_aux;       
+    Escenario esc_aux;     
     int encontrado = 0;
     int id;
     int opc;
@@ -1164,7 +1165,8 @@ void modificar_presentacion(void)
         {
             encontrado = 1;
             
-            do {
+            do
+            {
                 limpiarf();
                 printf("=== Presentacion Encontrada (ID: %d) ===\n", aux.id_presentacion);
                 printf(" 1 - Cambiar ID Artista (Actual: %d)\n", aux.idArtista);
@@ -1172,7 +1174,6 @@ void modificar_presentacion(void)
                 printf(" 3 - Cambiar Horario de Inicio (Actual: %02d:%02d)\n", aux.inicio.horas, aux.inicio.minutos);
                 printf(" 4 - Cambiar Duracion (Actual: %02d:%02d)\n", aux.duracion.horas, aux.duracion.minutos);
                 printf(" 0 - Guardar cambios y salir\n");
-
                 printf("\n Opcion: ");
                 opc = scanInt();
 
@@ -1184,10 +1185,19 @@ void modificar_presentacion(void)
                         printf("Nuevo ID Artista: ");
                         nuevoIdArtista = scanInt();
                         
-                        if(buscar_artista_id(nuevoIdArtista, &art_aux))
+                        if(buscar_artista_id(nuevoIdArtista, &art_aux) == 1)
                         {
-                            aux.idArtista = nuevoIdArtista;
-                            mensaje("OK", "Artista modificado temporalmente");
+                            int conflicto = verificar_solapamiento(nuevoIdArtista, aux.idEscenario, aux.inicio, aux.duracion, aux.id_presentacion);
+                            
+                            if (conflicto == 1)
+                            {
+                                mensaje("ERROR", "Solapamiento: El artista propuesto ya tiene otro show en este horario");
+                            }
+                            else
+                            {
+                                aux.idArtista = nuevoIdArtista;
+                                mensaje("OK", "Artista modificado temporalmente");
+                            }
                         }
                         else
                         {
@@ -1202,10 +1212,19 @@ void modificar_presentacion(void)
                         printf("Nuevo ID Escenario: ");
                         nuevoIdEscenario = scanInt();
                         
-                        if(buscar_escenario_id(nuevoIdEscenario, &esc_aux))
+                        if(buscar_escenario_id(nuevoIdEscenario, &esc_aux) == 1)
                         {
-                            aux.idEscenario = nuevoIdEscenario;
-                            mensaje("OK", "Escenario modificado temporalmente");
+                            int conflicto = verificar_solapamiento(aux.idArtista, nuevoIdEscenario, aux.inicio, aux.duracion, aux.id_presentacion);
+                            
+                            if (conflicto == 2)
+                            {
+                                mensaje("ERROR", "Solapamiento: El escenario propuesto esta ocupado en este horario");
+                            }
+                            else
+                            {
+                                aux.idEscenario = nuevoIdEscenario;
+                                mensaje("OK", "Escenario modificado temporalmente");
+                            }
                         }
                         else
                         {
@@ -1218,17 +1237,28 @@ void modificar_presentacion(void)
                     {
                         Horario nuevoInicio;
                         printf("\n-- NUEVA HORA DE INICIO --\n");
-
                         printf(" Ingrese hora: ");
                         nuevoInicio.horas = scanInt();
-
                         printf(" Ingrese minutos: ");
                         nuevoInicio.minutos = scanInt();
                         
                         if(validar_horario(nuevoInicio))
                         {
-                            aux.inicio = nuevoInicio;
-                            mensaje("OK", "Horario de inicio modificado temporalmente");
+                            int conflicto = verificar_solapamiento(aux.idArtista, aux.idEscenario, nuevoInicio, aux.duracion, aux.id_presentacion);
+                            
+                            if (conflicto == 1)
+                            {
+                                mensaje("ERROR", "Solapamiento: El artista esta ocupado a esa nueva hora");
+                            }
+                            else if(conflicto == 2)
+                            {
+                                mensaje("ERROR", "Solapamiento: El escenario esta ocupado a esa nueva hora");
+                            }
+                            else
+                            {
+                                aux.inicio = nuevoInicio;
+                                mensaje("OK", "Horario de inicio modificado temporalmente");
+                            }
                         }
                         else
                         {
@@ -1239,15 +1269,28 @@ void modificar_presentacion(void)
                     }
                     case 4:
                     {
+                        Duracion nuevaDuracion;
                         printf("\n-- NUEVA DURACION --\n");
-
                         printf(" Ingrese hora: ");
-                        aux.duracion.horas = scanInt();
+                        nuevaDuracion.horas = scanInt();
+                        printf(" Ingrese minutos: ");
+                        nuevaDuracion.minutos = scanInt();
                         
-						printf(" Ingrese minutos: ");
-                        aux.duracion.minutos = scanInt();
+                        int conflicto = verificar_solapamiento(aux.idArtista, aux.idEscenario, aux.inicio, nuevaDuracion, aux.id_presentacion);
                         
-                        mensaje("OK", "Duracion modificada temporalmente");
+                        if (conflicto == 1)
+                        {
+                            mensaje("ERROR", "Solapamiento: Al extender la duracion choca con otro show del artista");
+                        }
+                        else if(conflicto == 2)
+                        {
+                            mensaje("ERROR", "Solapamiento: Al extender la duracion choca con otro show en el escenario");
+                        }
+                        else
+                        {
+                            aux.duracion = nuevaDuracion;
+                            mensaje("OK", "Duracion modificada temporalmente");
+                        }
                         pausarf();
                         break;
                     }
@@ -1274,7 +1317,7 @@ void modificar_presentacion(void)
     }
     else
     {
-        mensaje("OK", "Presentacion actualizada correctamente");
+        mensaje("OK", "Presentacion actualizada exitosamente en la base de datos");
     }
 }
 
