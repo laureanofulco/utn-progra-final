@@ -11,6 +11,7 @@ int modificar_admin(void);
 // Escenarios
 void alta_escenario(void);
 void listar_escenarios(void);
+void modificar_escenario(void);
 
 
 #endif

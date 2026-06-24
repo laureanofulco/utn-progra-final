@@ -246,4 +246,48 @@ void listar_escenarios(void)
 	}
 }
 
+/**
+ * @brief Modifica los datos de un escenario existente.
+ *
+ * Busca un escenario activo mediante su identificador y permite
+ * actualizar su nombre. Los cambios se almacenan directamente
+ * en el archivo de escenarios.
+ */
+void modificar_escenario(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "r+b");
+	Escenario aux_escenario;
+	int encontrado = 0;
+	char nombre[50];
+	int id;
+	
+	if(archivo != NULL)
+    {
+		printf("- MODIFICAR ESCENARIO -\n");
+		printf(" Ingrese id: ");
+		id = scanInt();
+		
+		while(fread(&aux_escenario, sizeof(Escenario), 1, archivo)>0)
+        {
+			if(aux_escenario.id == id && aux_escenario.escenario_activo == 1)
+            {
+				printf(" Ingrese nombre nuevo: ");
+				scanString(nombre, 50);
+				
+				strcpy(aux_escenario.nombre, nombre);
+				fseek(archivo, -(long)sizeof(Escenario), SEEK_CUR);
+				fwrite(&aux_escenario, sizeof(Escenario), 1, archivo);
+			
+				mensaje("OK", "Nombre modificado con exito");
+				fclose(archivo);
+			}
+		}
+
+		fclose(archivo);
+	}
+    else
+    {
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+}
 
