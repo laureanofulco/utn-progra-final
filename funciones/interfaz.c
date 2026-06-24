@@ -912,3 +912,68 @@ void menu_escenarios(void)
 		
 	} while(menu_opcion != 0);
 }
+
+void menu_presentaciones(void)
+{
+	int menu_opcion;
+	
+	do
+	{
+		limpiar_pantalla();
+
+		printf("==== Gestion de presentaciones ====\n");
+        printf("1 - Alta\n");
+        printf("2 - Baja\n");
+        printf("3 - Modificar\n");
+        printf("4 - Listar\n");
+        printf("5 - Buscar por artista\n");
+        printf("6 - Buscar por escenario\n");
+        printf("0 - Volver\n");
+        
+		printf(" opcion: ");
+        menu_opcion = scanInt();
+        
+        switch(menu_opcion)
+		{
+        	case 1:
+			{
+        		limpiar_pantalla();
+        		alta_presentacion();
+        		pausarf();
+				break;
+			}
+			case 2:
+			{
+				limpiar_pantalla();
+				
+				pausarf();
+				break;
+			}
+			case 3:{
+				limpiar_pantalla();
+				
+				pausarf();
+				break;
+			}
+			case 4:{
+				limpiar_pantalla();
+				listar_presentaciones();
+				pausarf();
+				break;
+			}
+			case 5:{
+				limpiar_pantalla();
+				
+				getchar();
+				break;
+			}
+			case 6:{
+				limpiar_pantalla();
+				
+				getchar();
+				break;
+			}
+		}
+		
+	}while(menu_opcion != 0);
+}

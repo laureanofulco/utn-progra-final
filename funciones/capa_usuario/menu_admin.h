@@ -6,7 +6,7 @@
 void menu_admin();              //
 void menu_artistas();           //
 void menu_escenarios();         //
-void menu_presentaciones();
+void menu_presentaciones();     //
 void administracion();
 
 // Guardas
