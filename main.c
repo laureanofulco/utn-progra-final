@@ -1,7 +1,8 @@
-#include "funciones/funciones.h"
+#include "funciones/herramientas.h"
+#include "funciones/interfaz.h"
 
-
-int main(){
+int main()
+{
 	int opc = 0;
 	
 	generar_archivo_admins();

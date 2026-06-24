@@ -1,3 +1,7 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include "funciones/herramientas.h"
+#include "funciones/dominio.h"
 #include "funciones/logica.h"
 
 
