@@ -848,70 +848,85 @@ int obtener_id_presentacion(void)
 }
 
 /**
- *@brief Permite registrar una presentacion
- *
- * Guarada los datos de presentacion en un binario
- *
- *@return void
-*/
+ * @brief Registra una nueva presentación en el sistema.
+ * * Valida la existencia del artista y el escenario, solicita los
+ * horarios y verifica que no existan solapamientos de tiempo.
+ */
 void alta_presentacion(void)
 {
-	FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "ab");
-	Presentacion aux;
-	
-	if(archivo != NULL)
-	{
-		printf("<---- ALTA PRESENTACIONES  ---->\n");
-		printf(" Ingrese id artista: ");
-		aux.idArtista = scanInt();
-		
-		if(!buscar_artista_id(aux.idArtista, NULL))
-		{
-			mensaje("ERROR", "No se encontro el artista");
-			fclose(archivo);
-			return;
-		}
-		
-		printf(" Ingrese id del escenario: ");
-		aux.idEscenario = scanInt();
-		
-		if(!buscar_escenario_id(aux.idEscenario, NULL))
-		{
-			mensaje("ERROR", "No se encontro el escenario");
-			fclose(archivo);
-			return;
-		}
-		
-		printf("\n -- HORAD DE INCIO --\n");
-		printf(" Ingrese hora: ");
-		aux.inicio.horas = scanInt();
-		printf(" Ingrese minutos: ");
-		aux.inicio.minutos = scanInt();
-		
-		if(!validar_horario(aux.inicio))
-		{
-			mensaje("ERROR", "Horario no valido");
-			fclose(archivo);
-			return;
-		}
-		
-		printf("\n -- DURACION --\n");
-		printf(" Ingrese hora: ");
-		aux.duracion.horas = scanInt();
-		printf(" Ingrese minutos: ");
-		aux.duracion.minutos = scanInt();
-		
-		aux.id_presentacion = obtener_id_presentacion();
-		aux.presentacion_activo = 1;
-		
-		fwrite(&aux, sizeof(Presentacion), 1, archivo);
-		mensaje("OK", "Presentacion agregada existosamente");
-		fclose(archivo);
-	}
-	else
-	{
-		mensaje("ERROR", "No se pudo abrir el archivo");
-	}
+    Presentacion nueva;
+    Artista art_aux;
+    Escenario esc_aux;
+    
+    limpiarf();
+
+    printf("- ALTA DE PRESENTACION -\n");
+    
+    printf(" Ingrese ID del Artista: ");
+    nueva.idArtista = scanInt();
+
+    if (buscar_artista_id(nueva.idArtista, &art_aux) != 1)
+    {
+        mensaje("ERROR", "El artista no existe o fue dado de baja.");
+        return;
+    }
+    
+    printf(" Ingrese ID del Escenario: ");
+    nueva.idEscenario = scanInt();
+
+    if (buscar_escenario_id(nueva.idEscenario, &esc_aux) != 1)
+    {
+        mensaje("ERROR", "El escenario no existe o fue dado de baja.");
+        return;
+    }
+    
+    printf("\n-- HORARIO DE INICIO --\n");
+
+    printf(" Horas (0-23): ");
+    nueva.inicio.horas = scanInt();
+
+    printf(" Minutos (0-59): ");
+    nueva.inicio.minutos = scanInt();
+    
+    if (!validar_horario(nueva.inicio))
+    {
+        mensaje("ERROR", "Horario de inicio invalido.");
+        return;
+    }
+
+    printf("\n-- DURACION ESTIMADA --\n");
+    printf(" Horas: ");
+    nueva.duracion.horas = scanInt();
+    printf(" Minutos: ");
+    nueva.duracion.minutos = scanInt();
+    
+    int conflicto = verificar_solapamiento(nueva.idArtista, nueva.idEscenario, nueva.inicio, nueva.duracion, -1); // Le pasamos -1 porque es un alta nueva y todavía no tenemos un ID
+    
+    if (conflicto == 1)
+    {
+        mensaje("ERROR", "Solapamiento: El artista ya tiene otro show en ese mismo horario.");
+        return;
+    }
+    else if(conflicto == 2)
+    {
+        mensaje("ERROR", "Solapamiento: El escenario ya esta ocupado por otro show a esa hora.");
+        return;
+    }
+    
+    FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "ab");
+
+    if(archivo != NULL) 
+    {
+        nueva.id_presentacion = obtener_id_presentacion(); 
+        nueva.presentacion_activo = 1;
+        fwrite(&nueva, sizeof(Presentacion), 1, archivo);
+        fclose(archivo);
+        mensaje("OK", "Presentacion programada y registrada con exito.");
+    }
+    else 
+    {
+        mensaje("ERROR", "No se pudo abrir el archivo de presentaciones para guardar.");
+    }
 }
 
 /**
