@@ -1,6 +1,7 @@
 #ifndef INTERFAZ_H
 #define INTERFAZ_H
 
+#include "dominio.h"
 
 // Administradores
 void alta_admin(void);

@@ -1,6 +1,7 @@
 #ifndef LOGICA_H
 #define LOGICA_H
 
+#include "dominio.h"
 
 // Administradores
 void generar_archivo_admins(void);

@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "funciones/herramientas.h"
-#include "funciones/dominio.h"
-#include "funciones/logica.h"
-#include "funciones/interfaz.h"
+#include "herramientas.h"
+#include "dominio.h"
+#include "logica.h"
+#include "interfaz.h"
 
 
 /********* Administradores *********/
@@ -376,7 +376,7 @@ void alta_artista(void)
 		
 		strcpy(aux.nombre, nombre);
 		strcpy(aux.genero, genero);
-		aux.id = obtener_id();
+		aux.id = obtener_id_artista();
 		aux.activo = 1;
 		
 		fwrite(&aux, sizeof(Artista), 1, archivo);
@@ -454,10 +454,7 @@ int buscar_artista(char nombre[])
 	int encontrado = 0;
 
 	if(archivo != NULL)
-    {
-		printf("Nombre: ");
-		scanString(nombre, 50);
-	
+    {	
 		while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
         {
 			if(strcmp(nombre, aux.nombre) == 0)
@@ -468,14 +465,14 @@ int buscar_artista(char nombre[])
 				printf(" Genero: %s", aux.genero);
 			}
 
-			fclose(archivo);
-
 			if(encontrado == 0)
             {
 				mensaje("ERROR", "No se encontro el artista");
 			}
 		
 		}
+		
+		fclose(archivo);
 	}
 
 	return encontrado;
@@ -678,13 +675,6 @@ void alta_presentacion(void)
 		printf(" Ingrese minutos: ");
 		aux.duracion.minutos = scanInt();
 		
-		if(!validar_duracion(aux.duracion))
-		{
-			mensaje("ERROR", "Horario no valido");
-			fclose(archivo);
-			return;
-		}
-		
 		aux.id_presentacion = obtener_id_presentacion();
 		aux.presentacion_activo = 1;
 		
@@ -731,7 +721,7 @@ void listar_presentaciones(void)
             printf("\n----------------------\n");
             printf("ID: %d\n", aux.id_presentacion);
 
-            if(buscar_artista_id(aux.idArtista) != -1)
+            if(buscar_artista_id(aux.idArtista) != 1)
 			{
                 printf("Artista: %s\n", artista.nombre);
             }
@@ -764,7 +754,7 @@ void menu_principal(void)
 	int opc;
 	
 	do{
-		limpiar_pantalla();
+		limpiarf();
 
 		printf("======================\n");
 		printf("         MENU         \n");
@@ -856,7 +846,7 @@ void menu_admin(void)
 			}
 			case 4:
 			{
-				administracion();
+				menu_administracion();
 				break;
 			}
 			

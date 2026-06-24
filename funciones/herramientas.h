@@ -1,7 +1,7 @@
 #ifndef HERRAMIENTAS_H
 #define HERRAMIENTAS_H
 
-
+#include <string.h>
 #include "funciones/externas/pila.h"
 #include "funciones/externas/scanner.h"
 

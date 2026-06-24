@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "funciones/herramientas.h"
-#include "funciones/dominio.h"
-#include "funciones/logica.h"
+#include "herramientas.h"
+#include "dominio.h"
+#include "logica.h"
 
 
 /********* Administradores *********/
@@ -27,7 +27,7 @@ void generar_archivo_admins(void)
 
     Administrador admin;
 
-    limpiar_pantalla();
+    limpiarf();
 
     printf("\n==== Creacion primer admin ====\n");
 
@@ -282,10 +282,11 @@ int buscar_escenario_id(int id)
 				encontrado = 1;
 			}
 
-			fclose(archivo);
 		}
-	}
 
+		fclose(archivo);
+	}
+	
 	return encontrado;
 }
 

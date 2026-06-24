@@ -1,13 +1,14 @@
 #include "funciones/herramientas.h"
 #include "funciones/interfaz.h"
+#include "funciones/logica.h"
 
 int main()
-{
-	int opc = 0;
-	
+{	
 	generar_archivo_admins();
-	limpiar_pantalla();
-	menu();
+	
+	limpiarf();
+	
+	menu_principal();
 	
 	return 0;
 }
