@@ -14,13 +14,6 @@ typedef struct st_Administrador
 	char password[50];
 } Administrador;
 
-typedef struct st_Fecha
-{
-	int dia;
-	int mes;
-	int anio;
-} Fecha;
-
 typedef struct st_Horario
 {
 	int horas;

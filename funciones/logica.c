@@ -1,5 +1,6 @@
 #include "funciones/logica.h"
 
+
 /********* Administradores *********/
 /**
  * @brief Genera el archivo inicial de administradores.
@@ -165,4 +166,33 @@ int comparar_horario(Horario h1, Horario h2)
 	}
 	
 	return 0;
+}
+
+/********* Duración *********/
+/**
+ * @brief Crea una duración segura.
+ *
+ * Construye una estructura Duracion a partir de horas y minutos
+ * verificando que los valores representen una duración válida.
+ *
+ * @param horas Horas de duración.
+ * @param minutos Minutos de duración.
+ * @return Duracion inicializada y validada.
+ */
+Duracion crear_duracion(int horas, int minutos)
+{
+	Duracion d;
+	d.horas = horas;
+	d.minutos = minutos;
+	
+	if(horas >= 0 && horas > 24 && minutos > 0 && minutos < 60)
+    {
+		d.esValido = 1;
+	}
+    else
+    {
+		d.esValido = 0;
+	}
+
+	return d;
 }
