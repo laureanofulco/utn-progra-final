@@ -8,7 +8,8 @@
 
 
 #define ARCHIVO_ADMINS "archivos/admins.dat"
-#define ARCHIVO_ESCENARIOS "escenarios.dat"
+#define ARCHIVO_ESCENARIOS "archivos/escenarios.dat"
+#define ARCHIVO_ARTISTAS "archivos/artistas.dat"
 
 
 typedef struct st_Administrador

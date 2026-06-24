@@ -168,6 +168,7 @@ int comparar_horario(Horario h1, Horario h2)
 	return 0;
 }
 
+
 /********* Duración *********/
 /**
  * @brief Crea una duración segura.
@@ -196,6 +197,7 @@ Duracion crear_duracion(int horas, int minutos)
 
 	return d;
 }
+
 
 /********* Escenarios *********/
 int obtener_id_escenario(void)
@@ -305,3 +307,31 @@ void baja_escenario(void)
 	}
 }
 
+
+/********* Artistas *********/
+/**
+ * @brief Obtiene el próximo identificador disponible para un artista.
+ *
+ * Recorre el archivo de artistas buscando el mayor identificador
+ * registrado y devuelve dicho valor incrementado en una unidad.
+ *
+ * @return El último identificador encontrado más uno.
+ */
+int obtener_id(){
+	FILE * archivo = fopen(ARCHIVO_ARTISTAS, "rb");
+	int ultimoId = 0;
+	Artista aux;
+	
+	if(archivo != NULL){
+		while(fread(&aux, sizeof(Artista), 1, archivo) > 0){
+			if(aux.id > ultimoId){
+				ultimoId = aux.id;
+			}
+		}
+		fclose(archivo);	
+	}else{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+	
+	return ultimoId +1;
+}
