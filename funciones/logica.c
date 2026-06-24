@@ -342,3 +342,34 @@ int obtener_id_artista(void)
 	
 	return ultimoId +1;
 }
+
+/**
+ * @brief Verifica la existencia de un artista mediante su identificador.
+ *
+ * Recorre el archivo de artistas buscando un registro activo
+ * cuyo identificador coincida con el indicado.
+ *
+ * @param id Identificador del artista a buscar.
+ * @return 1 si el artista existe y está activo, 0 en caso contrario.
+ */
+int buscar_artista_id(int id)
+{
+	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "rb");
+	Artista aux;
+	int encontrado = 0;
+
+	if(archivo != NULL)
+	{
+		while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
+		{
+			if(aux.id == id && aux.activo == 1)
+			{
+				encontrado = 1;
+				break;
+			}
+		}
+		fclose(archivo);
+	}
+	return encontrado;
+}
+

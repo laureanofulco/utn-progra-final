@@ -23,6 +23,7 @@ void baja_escenario(void);
 
 // Artistas
 int obtener_id_artista(void);
+int buscar_artista_id(int id);
 
 
 #endif
