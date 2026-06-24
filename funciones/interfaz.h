@@ -28,6 +28,8 @@ void alta_presentacion(void);
 void listar_presentaciones(void);
 void baja_presentacion(void);
 void modificar_presentacion(void);
+void buscar_presentaciones_por_artista(void);
+void buscar_presentaciones_por_escenario(void);
 
 // Menúes
 void menu_principal(void);

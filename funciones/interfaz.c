@@ -1045,6 +1045,144 @@ void modificar_presentacion(void)
     }
 }
 
+/**
+ * @brief Busca y lista las presentaciones de un artista específico.
+ *
+ * Solicita el ID de un artista, valida su existencia y luego
+ * recorre el archivo de presentaciones mostrando solo aquellas
+ * que le pertenecen y que se encuentran activas (baja lógica).
+ */
+void buscar_presentaciones_por_artista(void)
+{
+    FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
+    Presentacion aux;
+    Artista artista;
+    Escenario escenario;
+    int id_artista_buscar;
+    int encontradas = 0;
+
+    if (archivo == NULL)
+    {
+        mensaje("ERROR", "No se pudo abrir el archivo de presentaciones");
+        return;
+    }
+
+    printf("- BUSCAR PRESENTACIONES POR ARTISTA -\n");
+    printf(" Ingrese el ID del artista: ");
+    id_artista_buscar = scanInt();
+
+    if (buscar_artista_id(id_artista_buscar, &artista) != 1)
+    {
+        mensaje("ERROR", "El artista no existe o fue dado de baja");
+        fclose(archivo);
+        return;
+    }
+
+    limpiarf();
+
+    printf("\n<---- PRESENTACIONES DE: %s ---->\n", artista.nombre);
+
+    while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+    {
+        if (aux.idArtista == id_artista_buscar && aux.presentacion_activo == 1)
+        {
+            encontradas++;
+            printf("\n----------------------\n");
+            printf("ID Presentacion: %d\n", aux.id_presentacion);
+
+            if (buscar_escenario_id(aux.idEscenario, &escenario) == 1)
+            {
+                printf("Escenario: %s\n", escenario.nombre);
+            }
+            else
+            {
+                printf("Escenario: [Dado de baja o no encontrado]\n");
+            }
+
+            printf("Inicio: %02d:%02d\n", aux.inicio.horas, aux.inicio.minutos);
+            printf("Duracion: %02d:%02d\n", aux.duracion.horas, aux.duracion.minutos);
+        }
+    }
+
+    if (encontradas == 0)
+    {
+        printf("\n [No hay presentaciones programadas para este artista]\n");
+    }
+
+    printf("----------------------\n");
+
+    fclose(archivo);
+}
+
+/**
+ * @brief Busca y lista las presentaciones asignadas a un escenario específico.
+ *
+ * Solicita el ID de un escenario, valida su existencia y luego
+ * recorre el archivo de presentaciones mostrando solo aquellas
+ * que ocurren allí y que se encuentran activas.
+ */
+void buscar_presentaciones_por_escenario(void)
+{
+    FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
+    Presentacion aux;
+    Artista artista;
+    Escenario escenario;
+    int id_escenario_buscar;
+    int encontradas = 0;
+
+    if (archivo == NULL)
+    {
+        mensaje("ERROR", "No se pudo abrir el archivo de presentaciones");
+        return;
+    }
+
+    printf("- BUSCAR PRESENTACIONES POR ESCENARIO -\n");
+    printf(" Ingrese el ID del escenario: ");
+    id_escenario_buscar = scanInt();
+
+    if (buscar_escenario_id(id_escenario_buscar, &escenario) != 1)
+    {
+        mensaje("ERROR", "El escenario no existe o fue dado de baja");
+        fclose(archivo);
+        return;
+    }
+
+    limpiarf();
+
+    printf("\n<---- PRESENTACIONES EN ESCENARIO: %s ---->\n", escenario.nombre);
+
+    while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+    {
+        if (aux.idEscenario == id_escenario_buscar && aux.presentacion_activo == 1)
+        {
+            encontradas++;
+			
+            printf("\n----------------------\n");
+            printf("ID Presentacion: %d\n", aux.id_presentacion);
+
+            if (buscar_artista_id(aux.idArtista, &artista) == 1)
+            {
+                printf("Artista: %s\n", artista.nombre);
+            }
+            else
+            {
+                printf("Artista: [Dado de baja o no encontrado]\n");
+            }
+
+            printf("Inicio: %02d:%02d\n", aux.inicio.horas, aux.inicio.minutos);
+            printf("Duracion: %02d:%02d\n", aux.duracion.horas, aux.duracion.minutos);
+        }
+    }
+
+    if (encontradas == 0)
+    {
+        printf("\n [No hay presentaciones programadas en este escenario]\n");
+    }
+
+    printf("----------------------\n");
+    fclose(archivo);
+}
+
 
 // Menúes
 void menu_principal(void)
@@ -1296,27 +1434,31 @@ void menu_presentaciones(void)
 				pausarf();
 				break;
 			}
-			case 3:{
+			case 3:
+			{
 				limpiarf();
 				modificar_presentacion();
 				pausarf();
 				break;
 			}
-			case 4:{
+			case 4:
+			{
 				limpiarf();
 				listar_presentaciones();
 				pausarf();
 				break;
 			}
-			case 5:{
+			case 5:
+			{
 				limpiarf();
-				
+				buscar_presentaciones_por_artista();
 				getchar();
 				break;
 			}
-			case 6:{
+			case 6:
+			{
 				limpiarf();
-				
+				buscar_presentaciones_por_escenario();
 				getchar();
 				break;
 			}
