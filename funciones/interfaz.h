@@ -30,6 +30,7 @@ void menu_admin(void);
 void menu_artistas(void);
 void menu_escenarios(void);
 void menu_presentaciones(void);
+void menu_administracion(void);
 
 
 #endif

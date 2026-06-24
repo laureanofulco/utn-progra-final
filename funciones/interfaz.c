@@ -189,7 +189,7 @@ int login_admin(void)
 	
 	while(contador_errores < 3)
 	{
-		limpiar_pantalla();
+		limpiarf();
 		printf("==== LOGIN ADMIN ====\n");
 
 		printf(" Nombre: ");
@@ -760,7 +760,7 @@ void menu_admin(void)
 
 	do
 	{
-		limpiar_pantalla();
+		limpiarf();
 		printf("===================\n");
 		printf("    MENU ADMIN     \n");
 		printf("===================\n");
@@ -817,7 +817,7 @@ void menu_artistas(void)
 	
 	do
 	{
-		limpiar_pantalla();
+		limpiarf();
 
 		printf("==== Gestion de artistas ====\n");
         printf("1 - Alta\n");
@@ -833,27 +833,27 @@ void menu_artistas(void)
 		{
         	case 1:
 			{
-        		limpiar_pantalla();
+        		limpiarf();
         		alta_artista();
 				break;
 			}
 			case 2:
 			{
-				limpiar_pantalla();
+				limpiarf();
 				baja_artista();
 				pausarf();
 				break;
 			}
 			case 3:
 			{
-				limpiar_pantalla();
+				limpiarf();
 				modificar_artista();
 				pausarf();
 				break;
 			}
 			case 4:
 			{
-				limpiar_pantalla();
+				limpiarf();
 				listar_artista();
 				pausarf();
 				break;
@@ -869,7 +869,7 @@ void menu_escenarios(void)
 	
 	do
 	{
-		limpiar_pantalla();
+		limpiarf();
 
 		printf("==== Gestion de escenarios ====\n");
         printf("1 - Alta\n");
@@ -885,25 +885,25 @@ void menu_escenarios(void)
 		{
         	case 1:
 			{
-        		limpiar_pantalla();
+        		limpiarf();
         		alta_escenario();
         		pausarf();
 				break;
 			}
 			case 2:{
-				limpiar_pantalla();
+				limpiarf();
 				baja_escenario();
 				pausarf();
 				break;
 			}
 			case 3:{
-				limpiar_pantalla();
+				limpiarf();
 				modificar_escenario();
 				pausarf();
 				break;
 			}
 			case 4:{
-				limpiar_pantalla();
+				limpiarf();
 				listar_escenarios();
 				pausarf();
 				break;
@@ -919,7 +919,7 @@ void menu_presentaciones(void)
 	
 	do
 	{
-		limpiar_pantalla();
+		limpiarf();
 
 		printf("==== Gestion de presentaciones ====\n");
         printf("1 - Alta\n");
@@ -937,38 +937,38 @@ void menu_presentaciones(void)
 		{
         	case 1:
 			{
-        		limpiar_pantalla();
+        		limpiarf();
         		alta_presentacion();
         		pausarf();
 				break;
 			}
 			case 2:
 			{
-				limpiar_pantalla();
+				limpiarf();
 				
 				pausarf();
 				break;
 			}
 			case 3:{
-				limpiar_pantalla();
+				limpiarf();
 				
 				pausarf();
 				break;
 			}
 			case 4:{
-				limpiar_pantalla();
+				limpiarf();
 				listar_presentaciones();
 				pausarf();
 				break;
 			}
 			case 5:{
-				limpiar_pantalla();
+				limpiarf();
 				
 				getchar();
 				break;
 			}
 			case 6:{
-				limpiar_pantalla();
+				limpiarf();
 				
 				getchar();
 				break;
@@ -976,4 +976,68 @@ void menu_presentaciones(void)
 		}
 		
 	}while(menu_opcion != 0);
+}
+
+void menu_administracion(void)
+{
+	int menu_opcion;
+	
+	do
+	{
+		limpiarf();
+
+		printf("==== Administracion ====\n");
+        printf("1 - Reportes\n");
+        printf("2 - Exportar datos\n");
+        printf("3 - Crear admin\n");
+        printf("4 - Listar admins\n");
+        printf("5 - Modificar admin\n"); 
+        printf("0 - Volver\n");
+        
+		printf(" opcion: ");
+        menu_opcion = scanInt();
+        
+        switch(menu_opcion)
+		{
+        	case 1:
+			{
+        		limpiarf();
+        		printf("[ADMIN] Generar reportes");
+				break;
+			}
+
+			case 2:
+			{
+				limpiarf();
+
+				break;
+			}
+			
+			case 3:{
+				limpiarf();
+				printf("[ADMIN] crear administrador\n");
+				alta_admin();
+				break;
+			}
+			
+			case 4:{
+				limpiarf();
+				printf("[ADMIN] ver lista de admins\n");
+				ver_admins();
+				break;
+			}
+			case 5:{
+				limpiarf();
+				printf("[ADMIN] Modificar admin\n");
+				modificar_admin();
+				pausarf();
+				break;
+			}
+			
+			case 0:{
+				break;
+			}
+		}
+		
+	} while(menu_opcion != 0);
 }
