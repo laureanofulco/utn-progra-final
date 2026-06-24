@@ -113,7 +113,6 @@ int validar_horario(Horario h)
 	return 1;
 }
 
-
 /**
  * @brief Crea un horario seguro.
  *
@@ -135,3 +134,4 @@ Horario crear_horario(int horas, int minutos)
 	
 	return h;
 }
+
