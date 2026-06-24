@@ -17,5 +17,6 @@ void modificar_escenario(void);
 void alta_artista(void);
 void listar_artista(void);
 int buscar_artista(char nombre[]);
+int modificar_artista(void);
 
 #endif

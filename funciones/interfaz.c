@@ -429,3 +429,109 @@ int buscar_artista(char nombre[])
 	return encontrado;
 }
 
+/**
+ * @brief Modifica los datos de un artista existente.
+ *
+ * Busca un artista activo mediante su identificador y permite
+ * modificar su nombre, género o estado. Una vez realizada la
+ * modificación, los cambios se guardan en el archivo de artistas.
+ *
+ * @return 0 si el usuario cancela la operación.
+ */
+int modificar_artista(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "r+b");
+	char nombre[50];
+	Artista aux;
+	int opc;
+	char genero[50];
+	int encontrado = 0;
+	int id;
+	
+	if(archivo != NULL)
+	{
+		printf("- Modificar artista -\n");
+		printf("id: ");
+		id = scanInt();
+				
+		while(fread(&aux, sizeof(Artista), 1, archivo)>0)
+		{
+			if(aux.id == id && aux.activo == 1)
+			{
+				encontrado = 1;
+				printf("[Artista encontrado: %s]\n", nombre);
+				printf("Que desea modificar?\n");
+				printf(" 1 - nombre\n");
+				printf(" 2 - genero\n");
+				printf(" 3 - estado\n");
+				printf(" 0 - salir\n");
+				printf("opcion: ");
+				opc = scanInt();
+				
+				switch(opc)
+				{
+					case 1:
+					{
+						printf("Ingrese nombre nuevo: ");
+						scanString(nombre, 50);
+						
+						strcpy(aux.nombre, nombre);
+						
+						fseek(archivo, -(long)sizeof(Artista), SEEK_CUR);
+						fwrite(&aux, sizeof(Artista), 1, archivo);
+						mensaje("OK", "Nombre modificado con exito");
+						
+						fclose(archivo);
+						break;
+					}
+					
+					case 2:
+					{
+						printf("Ingrese genero nuevo: ");
+						scanString(genero, 50);
+						
+						strcpy(aux.genero, genero);
+						
+						fseek(archivo, -(long)sizeof(Artista), SEEK_CUR);
+						fwrite(&aux, sizeof(Artista), 1, archivo);
+						mensaje("OK", "Genero modificado con exito");
+						
+						fclose(archivo);
+						break;
+					}
+					
+					case 3:
+					{
+						aux.activo = 0;
+						
+						fseek(archivo, -(long)sizeof(Artista), SEEK_CUR);
+						fwrite(&aux, sizeof(Artista), 1, archivo);
+						
+						mensaje("OK", "Estado modificado con exito");
+						
+						fclose(archivo);
+						break;
+					}
+					
+					case 0:
+					{
+						fclose(archivo);
+						return 0;
+					}
+				}
+			}
+		}
+
+		fclose(archivo);
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+	
+	if(encontrado != 1)
+	{
+		mensaje("ERROR", "No se pudo encontrar el artista");
+	}
+}
+

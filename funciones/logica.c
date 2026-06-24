@@ -373,3 +373,56 @@ int buscar_artista_id(int id)
 	return encontrado;
 }
 
+/**
+ * @brief Da de baja un artista del sistema.
+ *
+ * Solicita el identificador de un artista y, si existe
+ * y se encuentra activo, modifica su estado lógico a
+ * inactivo estableciendo el campo activo en 0.
+ *
+ * La baja es lógica, por lo que el registro permanece
+ * almacenado en el archivo de artistas.
+ *
+ * @see alta_artista()
+ * @see modificar_artista()
+ */
+void baja_artista(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "r+b");
+	Artista aux;
+	int encontrado = 0;
+	int id;
+		
+	if(archivo != NULL)
+	{
+		printf("id del artista: ");
+		id = scanInt();
+
+		while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
+		{
+			if(aux.id == id && aux.activo == 1)
+			{
+				aux.activo = 0;
+				fseek(archivo, -(long)sizeof(Artista), SEEK_CUR);
+				fwrite(&aux, sizeof(Artista), 1, archivo);
+				
+				encontrado = 1;
+				break;
+			}
+		}
+		
+		fclose(archivo);
+
+		mensaje("OK", "Artistas dado de baja exitosamente");
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+	
+	if(!encontrado)
+	{
+		mensaje("ERROR", "No se encontro el artista");
+	}
+}
+
