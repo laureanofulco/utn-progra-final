@@ -19,7 +19,7 @@ typedef struct stPresentacion
 
 // Funciones
 void alta_presentacion();			//
-void listar_presentaciones();
+void listar_presentaciones();		//
 int obtener_id_presentacion();
 
 // Guardas

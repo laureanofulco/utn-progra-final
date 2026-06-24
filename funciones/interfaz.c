@@ -611,3 +611,62 @@ void alta_presentacion(void)
 	}
 }
 
+/**
+ *@brief permite listar todas las presentaciones activas
+ *
+ * Recorre el archivo presentaciones, y muestra unicamente 
+ * cuyo campo "presentacion_Activo" es igual a 1.
+ * Para cada presentacion, se busca y muestra la informacion
+ * relacionada
+ * @see buscar_artista_id 
+ * @see  
+ *@return void
+*/
+void listar_presentaciones(void)
+{
+    FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
+    Presentacion aux;
+    Artista artista;
+    Escenario escenario;
+
+    if(archivo == NULL)
+	{
+        mensaje("ERROR", "No se pudo abrir el archivo");
+        return;
+    }
+
+    printf("<---- PRESENTACIONES ---->\n");
+
+    while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+	{
+        if(aux.presentacion_activo == 1)
+		{
+            printf("\n----------------------\n");
+            printf("ID: %d\n", aux.id_presentacion);
+
+            if(buscar_artista_id(aux.idArtista) != -1)
+			{
+                printf("Artista: %s\n", artista.nombre);
+            }
+			else
+			{
+                printf("Artista: [no encontrado]\n");
+            }
+
+            if(buscar_escenario_id(aux.idEscenario) != -1)
+			{
+                printf("Escenario: %s\n", escenario.nombre);
+            }
+			else
+			{
+                printf("Escenario: [no encontrado]\n");
+            }
+			
+            printf("Inicio: %02d:%02d\n", aux.inicio.horas, aux.inicio.minutos);
+            printf("Duracion: %02d:%02d\n",aux.duracion.horas, aux.duracion.minutos);
+        }
+    }
+
+    fclose(archivo);
+}
+
