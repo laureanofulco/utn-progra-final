@@ -264,7 +264,7 @@ void alta_escenario(void)
 void listar_escenarios(void)
 {
     FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "rb");
-    if (archivo == NULL)
+    if(archivo == NULL)
     {
         mensaje("ERROR", "No se pudo abrir el archivo de escenarios");
         return;
@@ -286,12 +286,12 @@ void listar_escenarios(void)
     {
         if(aux.escenario_activo == 1)
         {
-            if (validos == capacidad)
+            if(validos == capacidad)
             {
                 capacidad = capacidad + 10;
                 Escenario* temp = (Escenario*)realloc(arreglo, capacidad * sizeof(Escenario));
                 
-				if (temp == NULL)
+				if(temp == NULL)
                 {
                     mensaje("ERROR", "Fallo al redimensionar memoria");
                     free(arreglo);
@@ -321,7 +321,7 @@ void listar_escenarios(void)
     limpiarf();
 
     printf("<---- LISTADO DE ESCENARIOS (A-Z) ---->\n");
-    for (int i = 0; i < validos; i++)
+    for(int i = 0; i < validos; i++)
     {
         printf("\n-----------------------------\n");
         printf(" - Id: %d\n", arreglo[i].id);
@@ -335,15 +335,15 @@ void listar_escenarios(void)
     printf(" Opcion: ");
     int opc = scanInt();
 
-    if (opc == 1)
+    if(opc == 1)
     {
         FILE* arch_txt = fopen("archivos/escenarios.txt", "w");
-        if (arch_txt != NULL)
+        if(arch_txt != NULL)
         {
             fprintf(arch_txt, "=======================================\n");
             fprintf(arch_txt, "     LISTADO DE ESCENARIOS (A-Z)       \n");
             fprintf(arch_txt, "=======================================\n");
-            for (int i = 0; i < validos; i++)
+            for(int i = 0; i < validos; i++)
             {
                 fprintf(arch_txt, "ID: %d | Nombre: %s\n", arreglo[i].id, arreglo[i].nombre);
             }
@@ -531,9 +531,9 @@ void listar_artista(void)
 
     while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
     {
-        if (aux.activo == 1)
+        if(aux.activo == 1)
         {
-            if (validos == capacidad)
+            if(validos == capacidad)
             {
                 capacidad = capacidad + 10;
                 Artista* temp = (Artista*)realloc(arreglo, capacidad * sizeof(Artista));
@@ -587,12 +587,12 @@ void listar_artista(void)
     if(opc == 1)
     {
         FILE* arch_txt = fopen("archivos/artistas.txt", "w");
-        if (arch_txt != NULL)
+        if(arch_txt != NULL)
         {
             fprintf(arch_txt, "=======================================\n");
             fprintf(arch_txt, "      LISTADO DE ARTISTAS (A-Z)        \n");
             fprintf(arch_txt, "=======================================\n");
-            for (int i = 0; i < validos; i++)
+            for(int i = 0; i < validos; i++)
             {
                 fprintf(arch_txt, "ID: %d | Nombre: %s | Genero: %s\n", arreglo[i].id, arreglo[i].nombre, arreglo[i].genero);
             }
@@ -865,7 +865,7 @@ void alta_presentacion(void)
     printf(" Ingrese ID del Artista: ");
     nueva.idArtista = scanInt();
 
-    if (buscar_artista_id(nueva.idArtista, &art_aux) != 1)
+    if(buscar_artista_id(nueva.idArtista, &art_aux) != 1)
     {
         mensaje("ERROR", "El artista no existe o fue dado de baja.");
         return;
@@ -874,7 +874,7 @@ void alta_presentacion(void)
     printf(" Ingrese ID del Escenario: ");
     nueva.idEscenario = scanInt();
 
-    if (buscar_escenario_id(nueva.idEscenario, &esc_aux) != 1)
+    if(buscar_escenario_id(nueva.idEscenario, &esc_aux) != 1)
     {
         mensaje("ERROR", "El escenario no existe o fue dado de baja.");
         return;
@@ -888,7 +888,7 @@ void alta_presentacion(void)
     printf(" Minutos (0-59): ");
     nueva.inicio.minutos = scanInt();
     
-    if (!validar_horario(nueva.inicio))
+    if(!validar_horario(nueva.inicio))
     {
         mensaje("ERROR", "Horario de inicio invalido.");
         return;
@@ -902,7 +902,7 @@ void alta_presentacion(void)
     
     int conflicto = verificar_solapamiento(nueva.idArtista, nueva.idEscenario, nueva.inicio, nueva.duracion, -1); // Le pasamos -1 porque es un alta nueva y todavía no tenemos un ID
     
-    if (conflicto == 1)
+    if(conflicto == 1)
     {
         mensaje("ERROR", "Solapamiento: El artista ya tiene otro show en ese mismo horario.");
         return;
@@ -936,7 +936,7 @@ void alta_presentacion(void)
 void listar_presentaciones(void)
 {
     FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
-    if (archivo == NULL)
+    if(archivo == NULL)
     {
         mensaje("ERROR", "No se pudo abrir el archivo de presentaciones");
         return;
@@ -946,7 +946,7 @@ void listar_presentaciones(void)
     int validos = 0;
     Presentacion* arreglo = (Presentacion*)malloc(capacidad * sizeof(Presentacion));
 
-    if (arreglo == NULL)
+    if(arreglo == NULL)
     {
         mensaje("ERROR", "Fallo la asignacion inicial de memoria");
         fclose(archivo);
@@ -954,15 +954,15 @@ void listar_presentaciones(void)
     }
 
     Presentacion aux;
-    while (fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+    while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
     {
-        if (aux.presentacion_activo == 1)
+        if(aux.presentacion_activo == 1)
         {
-            if (validos == capacidad)
+            if(validos == capacidad)
             {
                 capacidad = capacidad + 10;
                 Presentacion* temp = (Presentacion*)realloc(arreglo, capacidad * sizeof(Presentacion));
-                if (temp == NULL)
+                if(temp == NULL)
                 {
                     mensaje("ERROR", "Fallo al redimensionar memoria");
                     free(arreglo);
@@ -980,7 +980,7 @@ void listar_presentaciones(void)
 
     fclose(archivo);
 
-    if (validos == 0)
+    if(validos == 0)
     {
         mensaje("AVISO", "No hay presentaciones activas para mostrar");
         free(arreglo);
@@ -996,12 +996,12 @@ void listar_presentaciones(void)
     Artista artista;
     Escenario escenario;
 
-    for (int i = 0; i < validos; i++)
+    for(int i = 0; i < validos; i++)
     {
         printf("\n----------------------\n");
         printf("ID Presentacion: %d\n", arreglo[i].id_presentacion);
 
-        if (buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
+        if(buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
         {
             printf("Artista: %s\n", artista.nombre);
         }
@@ -1010,7 +1010,7 @@ void listar_presentaciones(void)
             printf("Artista: [Dado de baja o no encontrado]\n");
         }
 
-        if (buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
+        if(buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
         {
             printf("Escenario: %s\n", escenario.nombre);
         }
@@ -1044,7 +1044,7 @@ void listar_presentaciones(void)
             {
                 fprintf(arch_txt, "ID: %d\n", arreglo[i].id_presentacion);
                 
-                if (buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
+                if(buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
                 {
                     fprintf(arch_txt, "Artista: %s\n", artista.nombre);
                 }
@@ -1053,7 +1053,7 @@ void listar_presentaciones(void)
                     fprintf(arch_txt, "Artista: [No encontrado]\n");
                 }
 
-                if (buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
+                if(buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
                 {
                     fprintf(arch_txt, "Escenario: %s\n", escenario.nombre);
                 }
@@ -1189,7 +1189,7 @@ void modificar_presentacion(void)
                         {
                             int conflicto = verificar_solapamiento(nuevoIdArtista, aux.idEscenario, aux.inicio, aux.duracion, aux.id_presentacion);
                             
-                            if (conflicto == 1)
+                            if(conflicto == 1)
                             {
                                 mensaje("ERROR", "Solapamiento: El artista propuesto ya tiene otro show en este horario");
                             }
@@ -1216,7 +1216,7 @@ void modificar_presentacion(void)
                         {
                             int conflicto = verificar_solapamiento(aux.idArtista, nuevoIdEscenario, aux.inicio, aux.duracion, aux.id_presentacion);
                             
-                            if (conflicto == 2)
+                            if(conflicto == 2)
                             {
                                 mensaje("ERROR", "Solapamiento: El escenario propuesto esta ocupado en este horario");
                             }
@@ -1246,7 +1246,7 @@ void modificar_presentacion(void)
                         {
                             int conflicto = verificar_solapamiento(aux.idArtista, aux.idEscenario, nuevoInicio, aux.duracion, aux.id_presentacion);
                             
-                            if (conflicto == 1)
+                            if(conflicto == 1)
                             {
                                 mensaje("ERROR", "Solapamiento: El artista esta ocupado a esa nueva hora");
                             }
@@ -1278,7 +1278,7 @@ void modificar_presentacion(void)
                         
                         int conflicto = verificar_solapamiento(aux.idArtista, aux.idEscenario, aux.inicio, nuevaDuracion, aux.id_presentacion);
                         
-                        if (conflicto == 1)
+                        if(conflicto == 1)
                         {
                             mensaje("ERROR", "Solapamiento: Al extender la duracion choca con otro show del artista");
                         }
@@ -1330,7 +1330,7 @@ void modificar_presentacion(void)
 void buscar_presentaciones_por_artista(void)
 {
     FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
-    if (archivo == NULL)
+    if(archivo == NULL)
     {
         mensaje("ERROR", "No se pudo abrir el archivo de presentaciones");
         return;
@@ -1344,7 +1344,7 @@ void buscar_presentaciones_por_artista(void)
     printf(" Ingrese el ID del artista: ");
     id_artista_buscar = scanInt();
 
-    if (buscar_artista_id(id_artista_buscar, &artista) != 1)
+    if(buscar_artista_id(id_artista_buscar, &artista) != 1)
     {
         mensaje("ERROR", "El artista no existe o fue dado de baja");
         fclose(archivo);
@@ -1355,7 +1355,7 @@ void buscar_presentaciones_por_artista(void)
     int validos = 0;
     Presentacion* arreglo = (Presentacion*)malloc(capacidad * sizeof(Presentacion));
     
-    if (arreglo == NULL)
+    if(arreglo == NULL)
     {
         mensaje("ERROR", "Fallo la asignacion de memoria");
         fclose(archivo);
@@ -1365,13 +1365,13 @@ void buscar_presentaciones_por_artista(void)
     Presentacion aux;
     while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
     {
-        if (aux.idArtista == id_artista_buscar && aux.presentacion_activo == 1)
+        if(aux.idArtista == id_artista_buscar && aux.presentacion_activo == 1)
         {
             if(validos == capacidad)
             {
                 capacidad += 10;
                 Presentacion* temp = (Presentacion*)realloc(arreglo, capacidad * sizeof(Presentacion));
-                if (temp == NULL)
+                if(temp == NULL)
                 {
                     mensaje("ERROR", "Fallo al redimensionar memoria");
                     free(arreglo);
@@ -1388,7 +1388,7 @@ void buscar_presentaciones_por_artista(void)
 
     fclose(archivo);
 
-    if (validos == 0)
+    if(validos == 0)
     {
         printf("\n [No hay presentaciones programadas para este artista]\n");
         pausarf();
@@ -1402,12 +1402,12 @@ void buscar_presentaciones_por_artista(void)
 
     printf("<---- PRESENTACIONES DE: %s (CRONOLOGICO) ---->\n", artista.nombre);
 
-    for (int i = 0; i < validos; i++)
+    for(int i = 0; i < validos; i++)
     {
         printf("\n----------------------\n");
         printf("ID Presentacion: %d\n", arreglo[i].id_presentacion);
 
-        if (buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
+        if(buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
         {
             printf("Escenario: %s\n", escenario.nombre);
         }
@@ -1427,20 +1427,20 @@ void buscar_presentaciones_por_artista(void)
     printf(" Opcion: ");
     int opc = scanInt();
 
-    if (opc == 1)
+    if(opc == 1)
     {
         FILE* arch_txt = fopen("archivos/presentaciones_artista.txt", "w");
-        if (arch_txt != NULL)
+        if(arch_txt != NULL)
         {
             fprintf(arch_txt, "========================================================\n");
             fprintf(arch_txt, "      PRESENTACIONES DE: %s (CRONOLOGICO)               \n", artista.nombre);
             fprintf(arch_txt, "========================================================\n\n");
             
-            for (int i = 0; i < validos; i++)
+            for(int i = 0; i < validos; i++)
             {
                 fprintf(arch_txt, "ID: %d\n", arreglo[i].id_presentacion);
                 
-                if (buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
+                if(buscar_escenario_id(arreglo[i].idEscenario, &escenario) == 1)
                 {
                     fprintf(arch_txt, "Escenario: %s\n", escenario.nombre);
                 }
@@ -1475,7 +1475,7 @@ void buscar_presentaciones_por_artista(void)
 void buscar_presentaciones_por_escenario(void)
 {
     FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
-    if (archivo == NULL)
+    if(archivo == NULL)
     {
         mensaje("ERROR", "No se pudo abrir el archivo de presentaciones");
         return;
@@ -1489,7 +1489,7 @@ void buscar_presentaciones_por_escenario(void)
     printf(" Ingrese el ID del escenario: ");
     id_escenario_buscar = scanInt();
 
-    if (buscar_escenario_id(id_escenario_buscar, &escenario) != 1)
+    if(buscar_escenario_id(id_escenario_buscar, &escenario) != 1)
     {
         mensaje("ERROR", "El escenario no existe o fue dado de baja");
         fclose(archivo);
@@ -1500,7 +1500,7 @@ void buscar_presentaciones_por_escenario(void)
     int validos = 0;
     Presentacion* arreglo = (Presentacion*)malloc(capacidad * sizeof(Presentacion));
     
-    if (arreglo == NULL)
+    if(arreglo == NULL)
     {
         mensaje("ERROR", "Fallo la asignacion de memoria");
         fclose(archivo);
@@ -1508,15 +1508,15 @@ void buscar_presentaciones_por_escenario(void)
     }
 
     Presentacion aux;
-    while (fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+    while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
     {
-        if (aux.idEscenario == id_escenario_buscar && aux.presentacion_activo == 1)
+        if(aux.idEscenario == id_escenario_buscar && aux.presentacion_activo == 1)
         {
-            if (validos == capacidad)
+            if(validos == capacidad)
             {
                 capacidad += 10;
                 Presentacion* temp = (Presentacion*)realloc(arreglo, capacidad * sizeof(Presentacion));
-                if (temp == NULL)
+                if(temp == NULL)
                 {
                     mensaje("ERROR", "Fallo al redimensionar memoria");
                     free(arreglo);
@@ -1532,7 +1532,7 @@ void buscar_presentaciones_por_escenario(void)
 
     fclose(archivo);
 
-    if (validos == 0)
+    if(validos == 0)
     {
         printf("\n [No hay presentaciones programadas en este escenario]\n");
         pausarf();
@@ -1545,12 +1545,12 @@ void buscar_presentaciones_por_escenario(void)
     limpiarf();
 
     printf("<---- PRESENTACIONES EN ESCENARIO: %s (CRONOLOGICO) ---->\n", escenario.nombre);
-    for (int i = 0; i < validos; i++)
+    for(int i = 0; i < validos; i++)
     {
         printf("\n----------------------\n");
         printf("ID Presentacion: %d\n", arreglo[i].id_presentacion);
 
-        if (buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
+        if(buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
         {
             printf("Artista: %s\n", artista.nombre);
         }
@@ -1570,20 +1570,20 @@ void buscar_presentaciones_por_escenario(void)
     printf(" Opcion: ");
     int opc = scanInt();
 
-    if (opc == 1)
+    if(opc == 1)
     {
         FILE* arch_txt = fopen("archivos/presentaciones_escenario.txt", "w");
-        if (arch_txt != NULL)
+        if(arch_txt != NULL)
         {
             fprintf(arch_txt, "========================================================\n");
             fprintf(arch_txt, "      PRESENTACIONES EN ESCENARIO: %s (CRONOLOGICO)     \n", escenario.nombre);
             fprintf(arch_txt, "========================================================\n\n");
             
-            for (int i = 0; i < validos; i++)
+            for(int i = 0; i < validos; i++)
             {
                 fprintf(arch_txt, "ID: %d\n", arreglo[i].id_presentacion);
                 
-                if (buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
+                if(buscar_artista_id(arreglo[i].idArtista, &artista) == 1)
                 {
                     fprintf(arch_txt, "Artista: %s\n", artista.nombre);
                 }
@@ -1948,44 +1948,134 @@ void menu_administracion(void)
 
 void menu_usuario(void)
 {
-	int opc = 0;
-	
-	do{
-		limpiarf();
+    int opcion = 0;
+    int id_busqueda;
+    char nombre_busqueda[50];
+    Artista art_aux;
+    Escenario esc_aux;
+    
+    do
+    {
+        limpiarf();
 
-		printf("==========================\n");
-		printf("     MENU DE USUARIO      \n");
-		printf("==========================\n");
-		printf(" 1 - Ver lista de artistas\n");
-		printf(" 2 - Buscar artistas por nombre\n");
-		printf(" 3 - Ver informacion de un artista\n");
-		printf(" 4 - Ver presentaciones de artistas\n");
-		printf(" 5 - Ver listado de escenarios\n");
-		printf(" 6 - Ver informacion de un escenario\n");
-		printf(" 7 - Ver todas las presentaciones\n");
-		printf(" 8 - Filtrar por artista\n");
-		printf(" 9 - Filtrar por escenario\n");
-		printf(" 10 - Filtrar por fecha\n");	
-		printf(" 11 - Ver horarios\n");
-		printf(" 0 - volver\n");
+        printf("==========================\n");
+        printf("     MENU DE USUARIO      \n");
+        printf("==========================\n");
+        printf(" 1 - Ver lista de artistas\n");
+        printf(" 2 - Buscar artistas por nombre\n");
+        printf(" 3 - Ver informacion de un artista (por ID)\n");
+        printf(" 4 - Ver presentaciones de artistas\n");
+        printf(" 5 - Ver listado de escenarios\n");
+        printf(" 6 - Ver informacion de un escenario (por ID)\n");
+        printf(" 7 - Ver todas las presentaciones\n");
+        printf(" 8 - Filtrar por escenario\n");
+        printf(" 0 - Volver\n");
 
-		printf(" opcion: ");
-		opc = scanInt();
-		
-		switch(opc)
-		{
-			case 0:
-			{
-				limpiarf();
-				break;
-			}
-			case 1:
-			{
-				printf(" seleccion la opcion 1\n");
-				break;
-			}
-		}	
-	} while(opc != 0);
+        printf("\n opcion: ");
+        opcion = scanInt();
+        
+        switch(opcion)
+        {
+            case 1:
+            {
+                limpiarf();
+                listar_artista();
+                pausarf();
+                break;
+            }
+            case 2:
+            {
+                limpiarf();
+                printf("Ingrese el nombre del artista\n");
+                scanString(nombre_busqueda, 50);
+                buscar_artista(nombre_busqueda); 
+                pausarf();
+                break;
+            }
+            case 3:
+            {
+                limpiarf();
+                printf("- BUSCAR INFO DE ARTISTA -\n");
+                printf(" Ingrese ID del artista: ");
+                id_busqueda = scanInt();
+                
+                if(buscar_artista_id(id_busqueda, &art_aux) == 1)
+                {
+                    printf("\n-----------------------------\n");
+                    printf(" ID: %d\n", art_aux.id);
+                    printf(" Nombre: %s\n", art_aux.nombre);
+                    printf(" Genero: %s\n", art_aux.genero);
+                    printf("-----------------------------\n");
+                }
+                else
+                {
+                    mensaje("ERROR", "El artista no existe o fue dado de baja");
+                }
+                pausarf();
+                break;
+            }
+            case 4:
+            {
+                limpiarf();
+                buscar_presentaciones_por_artista();
+                pausarf();
+                break;
+            }
+            case 5:
+            {
+                limpiarf();
+                listar_escenarios();
+                pausarf();
+                break;
+            }
+            case 6:
+            {
+                limpiarf();
+                printf("- BUSCAR INFO DE ESCENARIO -\n");
+                printf(" Ingrese ID del escenario: ");
+                id_busqueda = scanInt();
+                
+                if(buscar_escenario_id(id_busqueda, &esc_aux) == 1)
+                {
+                    printf("\n-----------------------------\n");
+                    printf(" ID: %d\n", esc_aux.id);
+                    printf(" Nombre: %s\n", esc_aux.nombre);
+                    printf("-----------------------------\n");
+                }
+                else
+                {
+                    mensaje("ERROR", "El escenario no existe o fue dado de baja");
+                }
+                pausarf();
+                break;
+            }
+            case 7:
+            {
+                limpiarf();
+                listar_presentaciones();
+                pausarf();
+                break;
+            }
+            case 8:
+            {
+                limpiarf();
+                buscar_presentaciones_por_escenario();
+                pausarf();
+                break;
+            }
+            case 0:
+            {
+                limpiarf();
+                break;
+            }
+            default:
+            {
+                mensaje("ERROR", "Opcion invalida, intente nuevamente.");
+                pausarf();
+                break;
+            }
+        }   
+    } while(opcion != 0);
 }
 
 
@@ -2007,12 +2097,12 @@ void mostrar_reporte_general(void)
     int contador_escenarios = 0;
     int contador_presentaciones = 0;
 
-    if (f_artistas != NULL)
+    if(f_artistas != NULL)
     {
         Artista aux_art;
-        while (fread(&aux_art, sizeof(Artista), 1, f_artistas) > 0)
+        while(fread(&aux_art, sizeof(Artista), 1, f_artistas) > 0)
         {
-            if (aux_art.activo == 1)
+            if(aux_art.activo == 1)
             {
                 contador_artistas++;
             }
@@ -2021,12 +2111,12 @@ void mostrar_reporte_general(void)
         fclose(f_artistas);
     }
 
-    if (f_escenarios != NULL)
+    if(f_escenarios != NULL)
     {
         Escenario aux_esc;
         while(fread(&aux_esc, sizeof(Escenario), 1, f_escenarios) > 0)
         {
-            if (aux_esc.escenario_activo == 1)
+            if(aux_esc.escenario_activo == 1)
             {
                 contador_escenarios++;
             }
@@ -2035,12 +2125,12 @@ void mostrar_reporte_general(void)
         fclose(f_escenarios);
     }
 
-    if (f_presentaciones != NULL)
+    if(f_presentaciones != NULL)
     {
         Presentacion aux_pres;
         while(fread(&aux_pres, sizeof(Presentacion), 1, f_presentaciones) > 0)
         {
-            if (aux_pres.presentacion_activo == 1)
+            if(aux_pres.presentacion_activo == 1)
             {
                 contador_presentaciones++;
             }

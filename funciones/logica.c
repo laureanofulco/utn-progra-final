@@ -412,7 +412,7 @@ int validar_artista(char nombre[])
 int verificar_solapamiento(int id_artista, int id_escenario, Horario inicio, Duracion duracion, int id_presentacion_omitir)
 {
     FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "rb");
-    if (archivo == NULL)
+    if(archivo == NULL)
 	{
 		return 0;
 	} 
@@ -422,21 +422,21 @@ int verificar_solapamiento(int id_artista, int id_escenario, Horario inicio, Dur
     int ini_nuevo = (inicio.horas * 60) + inicio.minutos;
     int fin_nuevo = ini_nuevo + (duracion.horas * 60) + duracion.minutos;
 
-    while (fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+    while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
     {
-        if (aux.presentacion_activo == 1 && aux.id_presentacion != id_presentacion_omitir)
+        if(aux.presentacion_activo == 1 && aux.id_presentacion != id_presentacion_omitir)
         {
             int ini_existente = (aux.inicio.horas * 60) + aux.inicio.minutos;
             int fin_existente = ini_existente + (aux.duracion.horas * 60) + aux.duracion.minutos;
 
-            if (fin_nuevo <= ini_existente || ini_nuevo >= fin_existente)	// Esto es cuándo no se chocan: o la nueva termina antes o la nueva empieza después
+            if(fin_nuevo <= ini_existente || ini_nuevo >= fin_existente)	// Esto es cuándo no se chocan: o la nueva termina antes o la nueva empieza después
             {
-                if (aux.idArtista == id_artista)
+                if(aux.idArtista == id_artista)
 				{
                     fclose(archivo);
                     return 1;
                 }
-                if (aux.idEscenario == id_escenario)
+                if(aux.idEscenario == id_escenario)
 				{
                     fclose(archivo);
                     return 2;
@@ -463,19 +463,19 @@ void ordenar_artistas_seleccion(Artista* arreglo, int validos)
     int pos_menor;
     Artista aux;
 
-    for (int i = 0; i < validos - 1; i++)
+    for(int i = 0; i < validos - 1; i++)
     {
         pos_menor = i;
 
-        for (int j = i + 1; j < validos; j++)
+        for(int j = i + 1; j < validos; j++)
         {
-            if (strcmp(arreglo[j].nombre, arreglo[pos_menor].nombre) < 0)
+            if(strcmp(arreglo[j].nombre, arreglo[pos_menor].nombre) < 0)
             {
                 pos_menor = j;
             }
         }
 
-        if (pos_menor != i)
+        if(pos_menor != i)
         {
             aux = arreglo[i];
             arreglo[i] = arreglo[pos_menor];
@@ -493,19 +493,19 @@ void ordenar_escenarios_seleccion(Escenario* arreglo, int validos)
     int pos_menor;
     Escenario aux;
 
-    for (int i = 0; i < validos - 1; i++)
+    for(int i = 0; i < validos - 1; i++)
     {
         pos_menor = i;
 
-        for (int j = i + 1; j < validos; j++)
+        for(int j = i + 1; j < validos; j++)
         {
-            if (strcmp(arreglo[j].nombre, arreglo[pos_menor].nombre) < 0)
+            if(strcmp(arreglo[j].nombre, arreglo[pos_menor].nombre) < 0)
             {
                 pos_menor = j;
             }
         }
 
-        if (pos_menor != i)
+        if(pos_menor != i)
         {
             aux = arreglo[i];
             arreglo[i] = arreglo[pos_menor];
@@ -525,19 +525,19 @@ void ordenar_presentaciones_cronologico(Presentacion* arreglo, int validos)
     int pos_menor;
     Presentacion aux;
 
-    for (int i = 0; i < validos - 1; i++)
+    for(int i = 0; i < validos - 1; i++)
     {
         pos_menor = i;
 
-        for (int j = i + 1; j < validos; j++)
+        for(int j = i + 1; j < validos; j++)
         {
-            if (comparar_horario(arreglo[j].inicio, arreglo[pos_menor].inicio) == -1)
+            if(comparar_horario(arreglo[j].inicio, arreglo[pos_menor].inicio) == -1)
             {
                 pos_menor = j;
             }
         }
 
-        if (pos_menor != i)
+        if(pos_menor != i)
         {
             aux = arreglo[i];
             arreglo[i] = arreglo[pos_menor];
