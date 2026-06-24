@@ -224,3 +224,36 @@ int obtener_id_escenario(void)
 	
 	return ultimoIdEscenario +1;
 }
+
+/**
+ * @brief Busca un escenario activo por identificador.
+ *
+ * Recorre el archivo de escenarios verificando si existe
+ * un registro activo con el identificador indicado.
+ *
+ * @param id Identificador del escenario a buscar.
+ * @return 1 si el escenario existe y está activo,
+ *         0 en caso contrario.
+ */
+int buscar_escenario_id(int id)
+{
+	FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "rb");
+	int encontrado = 0;
+	Escenario aux;
+	
+	if(archivo != NULL)
+	{
+		while(fread(&aux, sizeof(Escenario), 1, archivo) > 0)
+		{
+			if(aux.id == id && aux.escenario_activo == 1)
+			{
+				encontrado = 1;
+			}
+
+			fclose(archivo);
+		}
+	}
+
+	return encontrado;
+}
+
