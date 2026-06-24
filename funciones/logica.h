@@ -19,13 +19,11 @@ Duracion crear_duracion(int horas, int minutos);
 // Escenarios
 int obtener_id_escenario(void);
 int buscar_escenario_id(int id, Escenario* escenario_encontrado);
-void baja_escenario(void);
 
 // Artistas
 int obtener_id_artista(void);
 int buscar_artista_id(int id, Artista* artista_encontrado);
 int validar_artista(char nombre[]);
-void baja_artista(void);
 
 
 #endif

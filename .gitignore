@@ -2,6 +2,7 @@
 *.exe
 *.outw
 *.o
+ejecutable
 
 # Carpetas de compilación
 bin/*

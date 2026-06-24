@@ -343,6 +343,54 @@ void modificar_escenario(void)
 	}
 }
 
+/**
+ * @brief Realiza la baja lógica de un escenario.
+ *
+ * Solicita el identificador de un escenario activo y modifica
+ * su estado estableciendo el campo escenario_activo en 0.
+ *
+ * El registro permanece almacenado en el archivo.
+ */
+void baja_escenario(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ESCENARIOS, "r+b");
+	Escenario aux_escenario;
+	int encontrado = 0;
+	int id;
+		
+	if(archivo != NULL)
+	{
+		printf("id del escenario: ");
+		id = scanInt();
+
+		while(fread(&aux_escenario, sizeof(Escenario), 1, archivo) > 0)
+		{
+			if(aux_escenario.id == id && aux_escenario.escenario_activo == 1)
+			{
+				aux_escenario.escenario_activo = 0;
+
+				fseek(archivo, -(long)sizeof(Escenario), SEEK_CUR);
+				fwrite(&aux_escenario, sizeof(Escenario), 1, archivo);
+				
+				encontrado = 1;
+				break;
+			}
+		}
+
+		fclose(archivo);
+
+		mensaje("OK", "Escenario dado de baja exitosamente");
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+	
+	if(!encontrado){
+		mensaje("ERROR", "No se encontro el escenario");
+	}
+}
+
 
 /********* Artistas *********/
 /**
@@ -584,6 +632,59 @@ int modificar_artista(void)
 	}
 }
 
+/**
+ * @brief Da de baja un artista del sistema.
+ *
+ * Solicita el identificador de un artista y, si existe
+ * y se encuentra activo, modifica su estado lógico a
+ * inactivo estableciendo el campo activo en 0.
+ *
+ * La baja es lógica, por lo que el registro permanece
+ * almacenado en el archivo de artistas.
+ *
+ * @see alta_artista()
+ * @see modificar_artista()
+ */
+void baja_artista(void)
+{
+	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "r+b");
+	Artista aux;
+	int encontrado = 0;
+	int id;
+		
+	if(archivo != NULL)
+	{
+		printf("id del artista: ");
+		id = scanInt();
+
+		while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
+		{
+			if(aux.id == id && aux.activo == 1)
+			{
+				aux.activo = 0;
+				fseek(archivo, -(long)sizeof(Artista), SEEK_CUR);
+				fwrite(&aux, sizeof(Artista), 1, archivo);
+				
+				encontrado = 1;
+				break;
+			}
+		}
+		
+		fclose(archivo);
+
+		mensaje("OK", "Artistas dado de baja exitosamente");
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo");
+	}
+	
+	if(!encontrado)
+	{
+		mensaje("ERROR", "No se encontro el artista");
+	}
+}
+
 
 /********* Presentaciones *********/
 /**
@@ -745,6 +846,56 @@ void listar_presentaciones(void)
     }
 
     fclose(archivo);
+}
+
+/**
+ * @brief Realiza la baja lógica de una presentación.
+ *
+ * Solicita el identificador de una presentación activa y modifica
+ * su estado estableciendo el campo presentacion_activo en 0.
+ */
+void baja_presentacion(void)
+{
+	FILE* archivo = fopen(ARCHIVO_PRESENTACIONES, "r+b");
+	Presentacion aux;
+	int encontrado = 0;
+	int id;
+		
+	if(archivo != NULL)
+	{
+		printf("ID de la presentacion a dar de baja: ");
+		id = scanInt();
+
+		while(fread(&aux, sizeof(Presentacion), 1, archivo) > 0)
+		{
+			if(aux.id_presentacion == id && aux.presentacion_activo == 1)
+			{
+				aux.presentacion_activo = 0;
+
+				fseek(archivo, -(long)sizeof(Presentacion), SEEK_CUR);
+				fwrite(&aux, sizeof(Presentacion), 1, archivo);
+				
+				encontrado = 1;
+				break;
+			}
+		}
+
+		fclose(archivo);
+	}
+	else
+	{
+		mensaje("ERROR", "No se pudo abrir el archivo de presentaciones");
+		return;
+	}
+	
+	if(encontrado)
+	{
+		mensaje("OK", "Presentacion dada de baja exitosamente");
+	}
+	else
+	{
+		mensaje("ERROR", "No se encontro una presentacion activa con ese ID");
+	}
 }
 
 

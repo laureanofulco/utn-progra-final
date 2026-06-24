@@ -13,17 +13,20 @@ int login_admin(void);
 void alta_escenario(void);
 void listar_escenarios(void);
 void modificar_escenario(void);
+void baja_escenario(void);
 
 // Artistas
 void alta_artista(void);
 void listar_artista(void);
 int buscar_artista(char nombre[]);
 int modificar_artista(void);
+void baja_artista(void);
 
 // Presentaciones
 int obtener_id_presentacion(void);
 void alta_presentacion(void);
 void listar_presentaciones(void);
+void baja_presentacion(void);
 
 // Menúes
 void menu_principal(void);
