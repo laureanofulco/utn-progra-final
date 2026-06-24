@@ -403,3 +403,98 @@ int validar_artista(char nombre[])
 }
 
 
+// Ordenamientos
+/**
+ * @brief Ordena un arreglo dinámico de Artistas alfabéticamente por nombre.
+ * Utiliza el algoritmo de Selección.
+ * @param arreglo Puntero al arreglo dinámico de artistas.
+ * @param validos Cantidad de elementos actualmente cargados en el arreglo.
+ */
+void ordenar_artistas_seleccion(Artista* arreglo, int validos)
+{
+    int pos_menor;
+    Artista aux;
+
+    for (int i = 0; i < validos - 1; i++)
+    {
+        pos_menor = i;
+
+        for (int j = i + 1; j < validos; j++)
+        {
+            if (strcmp(arreglo[j].nombre, arreglo[pos_menor].nombre) < 0)
+            {
+                pos_menor = j;
+            }
+        }
+
+        if (pos_menor != i)
+        {
+            aux = arreglo[i];
+            arreglo[i] = arreglo[pos_menor];
+            arreglo[pos_menor] = aux;
+        }
+    }
+}
+
+/**
+ * @brief Ordena un arreglo dinámico de Escenarios alfabéticamente por nombre.
+ * Utiliza el algoritmo de Selección.
+ */
+void ordenar_escenarios_seleccion(Escenario* arreglo, int validos)
+{
+    int pos_menor;
+    Escenario aux;
+
+    for (int i = 0; i < validos - 1; i++)
+    {
+        pos_menor = i;
+
+        for (int j = i + 1; j < validos; j++)
+        {
+            if (strcmp(arreglo[j].nombre, arreglo[pos_menor].nombre) < 0)
+            {
+                pos_menor = j;
+            }
+        }
+
+        if (pos_menor != i)
+        {
+            aux = arreglo[i];
+            arreglo[i] = arreglo[pos_menor];
+            arreglo[pos_menor] = aux;
+        }
+    }
+}
+
+/**
+ * @brief Ordena un arreglo dinámico de Presentaciones cronológicamente
+ * por hora de inicio. Utiliza el algoritmo de Selección.
+ * @param arreglo Puntero al arreglo dinámico de presentaciones.
+ * @param validos Cantidad de elementos cargados.
+ */
+void ordenar_presentaciones_cronologico(Presentacion* arreglo, int validos)
+{
+    int pos_menor;
+    Presentacion aux;
+
+    for (int i = 0; i < validos - 1; i++)
+    {
+        pos_menor = i;
+
+        for (int j = i + 1; j < validos; j++)
+        {
+            if (comparar_horario(arreglo[j].inicio, arreglo[pos_menor].inicio) == -1)
+            {
+                pos_menor = j;
+            }
+        }
+
+        if (pos_menor != i)
+        {
+            aux = arreglo[i];
+            arreglo[i] = arreglo[pos_menor];
+            arreglo[pos_menor] = aux;
+        }
+    }
+}
+

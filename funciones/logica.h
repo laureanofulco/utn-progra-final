@@ -25,5 +25,10 @@ int obtener_id_artista(void);
 int buscar_artista_id(int id, Artista* artista_encontrado);
 int validar_artista(char nombre[]);
 
+// Ordenamientos
+void ordenar_artistas_seleccion(Artista* arreglo, int validos);
+void ordenar_escenarios_seleccion(Escenario* arreglo, int validos);
+void ordenar_presentaciones_cronologico(Presentacion* arreglo, int validos);
+
 
 #endif
