@@ -385,3 +385,47 @@ void listar_artista(void)
 	}
 }
 
+/**
+ * @brief Busca un artista por nombre.
+ *
+ * Solicita un nombre al usuario, lo normaliza y lo compara
+ * con los registros almacenados en el archivo de artistas.
+ * Si encuentra coincidencias, muestra la información del artista.
+ *
+ * @param nombre Arreglo donde se almacena temporalmente el nombre ingresado.
+ * @return 1 si el artista fue encontrado, 0 en caso contrario.
+ */
+int buscar_artista(char nombre[])
+{
+	FILE* archivo = fopen(ARCHIVO_ARTISTAS, "rb");
+	Artista aux;
+	int encontrado = 0;
+
+	if(archivo != NULL)
+    {
+		printf("Nombre: ");
+		scanString(nombre, 50);
+	
+		while(fread(&aux, sizeof(Artista), 1, archivo) > 0)
+        {
+			if(strcmp(nombre, aux.nombre) == 0)
+            {
+				encontrado = 1;
+				printf("- ARTISTA -\n");
+				printf(" Nombre: %s", aux.nombre);
+				printf(" Genero: %s", aux.genero);
+			}
+
+			fclose(archivo);
+
+			if(encontrado == 0)
+            {
+				mensaje("ERROR", "No se encontro el artista");
+			}
+		
+		}
+	}
+
+	return encontrado;
+}
+
